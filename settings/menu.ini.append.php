@@ -8,7 +8,7 @@ Tabs[]=bccie_overview
 
 [Topmenu_bccie_overview]
 NavigationPartIdentifier=ezbccienavigationpart
-Name=BC CIE Export
+Name=CIE
 Tooltip=Collected Information Export Menu
 URL[]
 URL[default]=bccie/overview
