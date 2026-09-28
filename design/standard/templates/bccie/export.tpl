@@ -117,7 +117,7 @@
                                 <fieldset>
                                 <legend>{'Field #%counter'|i18n('design/bccie/export',, hash( '%counter', $counter) )}</legend>
                                     <select name="field_{$counter}">
-                                        <option selected="selected" value="contentobjectid">Content object id</option>
+                                        <option selected="selected" value="contentobjectid">{'Content object id'|i18n( 'design/bccie/export' )}</option>
 
                                         {section loop=$class.data_map}
                                                 {let current_inner_attribute=$:item}
@@ -147,7 +147,7 @@
     <legend>{'Export type'|i18n('design/bccie/export')}</legend>
     <select name="export_type">
         <option value="csv">CSV</option>
-        <option value="sylk">SYLK (Excel)</option>
+        <option value="sylk">{'SYLK (Excel)'|i18n( 'design/bccie/export' )}</option>
     </select>
 </fieldset>
 <fieldset>
