@@ -4,7 +4,7 @@
     "type": "ezpublish-legacy-extension",
     "keywords": [ "eZ Publish", "cie", "csv", "sylk", "export", "report", "reports", "utf8" ],
     "homepage": "https://github.com/se7enxweb/bccie",
-    "license": "GPL-2.0+",
+    "license": "GPL-2.0-or-later",
     "authors": [
         {
             "name" : "7x",
