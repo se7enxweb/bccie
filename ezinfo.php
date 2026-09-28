@@ -13,7 +13,7 @@ class bccieInfo
     {
         return array(
             'Name' => "<a href='http://projects.ez.no/cie'>BC CIE</a> - Collected Information Export",
-            'Version' => "1.1.5",
+            'Version' => "1.1.6",
             'Copyright' => array( "Copyright (C) 1999 - 2017 <a href='http://brookinsconsulting.com'>Brookins Consulting</a>",
                                   "Copyright (C) 2006 - 2007 <a href='http://silverhand.fr/'>Vitalis Mathias</a>" ),
             'Author' => "Brookins Consulting and Vitalis Mathias",
