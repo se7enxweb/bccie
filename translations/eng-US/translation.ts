@@ -273,4 +273,15 @@
         <translation>SYLK (Excel)</translation>
     </message>
 </context>
+<context>
+    <name>design/admin/pagelayout</name>
+    <message>
+        <source>CIE</source>
+        <translation>CIE</translation>
+    </message>
+    <message>
+        <source>Collected Information Export Menu</source>
+        <translation>Collected Information Export Menu</translation>
+    </message>
+</context>
 </TS>

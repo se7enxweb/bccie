@@ -273,4 +273,15 @@
         <translation type="unfinished"></translation>
     </message>
 </context>
+<context>
+    <name>design/admin/pagelayout</name>
+    <message>
+        <source>CIE</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Collected Information Export Menu</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
 </TS>

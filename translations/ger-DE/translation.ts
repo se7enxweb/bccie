@@ -144,7 +144,7 @@
     </message>
     <message>
         <source>BC CIE Export</source>
-        <translation type="unfinished"></translation>
+        <translation>BC-CIE-Export</translation>
     </message>
 </context>
 <context>
@@ -279,6 +279,17 @@
     <message>
         <source>Hash</source>
         <translation>Raute</translation>
+    </message>
+</context>
+<context>
+    <name>design/admin/pagelayout</name>
+    <message>
+        <source>CIE</source>
+        <translation>CIE</translation>
+    </message>
+    <message>
+        <source>Collected Information Export Menu</source>
+        <translation>Menü für den Export gesammelter Informationen</translation>
     </message>
 </context>
 </TS>
