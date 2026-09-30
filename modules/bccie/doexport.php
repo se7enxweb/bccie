@@ -28,7 +28,7 @@ if ( is_numeric( $objectID ) )
 
 if ( !$object )
 {
-    return $module->handleError( EZ_ERROR_KERNEL_NOT_AVAILABLE, 'kernel' );
+    return $module->handleError( eZError::KERNEL_NOT_AVAILABLE, 'kernel' );
 }
 
 $conditions = array( 'contentobject_id' => $objectID );
@@ -51,7 +51,7 @@ $collections = eZPersistentObject::fetchObjectList(
 // TODO: change error handler
 if ( !$collections )
 {
-    return $module->handleError( EZ_ERROR_KERNEL_NOT_AVAILABLE, 'kernel' );
+    return $module->handleError( eZError::KERNEL_NOT_AVAILABLE, 'kernel' );
 }
 
 $counter = 0;

@@ -26,7 +26,7 @@ if ( is_numeric( $objectID ) )
 
 if ( !$object )
 {
-    return $module->handleError( EZ_ERROR_KERNEL_NOT_AVAILABLE, 'kernel' );
+    return $module->handleError( eZError::KERNEL_NOT_AVAILABLE, 'kernel' );
 }
 
 $collections = eZInformationCollection::fetchCollectionsList(
