@@ -2,9 +2,8 @@
 /**
  * File containing the eZCollectExport ExportCSV Cronjob.
  *
- * @copyright Copyright (C) 1999 - 2017 Brookins Consulting. All rights reserved.
- * @license http://www.gnu.org/licenses/gpl-2.0.txt GNU General Public License v2 (or any later version)
- * @version //autogentag//
+ * @copyright Copyright (C) 1998 - 2026 7x and the Exponential Foundation. All rights reserved.
+ * @license GNU General Public License v2.0 (or any later version)
  * @package bccie
  */
 
