@@ -9,30 +9,6 @@
  */
 
 // Settings
-$ini = eZINI::instance( "cie.ini" );
 
-$debug = $ini->hasVariable( 'CieSettings', 'Debug' ) ? $ini->variable(
-                                                           'CieSettings',
-                                                               'Debug'
-                                                       ) == 'enabled' : false;
-$collection = $ini->variable( "CieSettings", "Collection" );
-$dir = $ini->variable( "CieSettings", "Directory" );
-$format = $ini->variable( "CieSettings", "CsvFormat" );
-$separator = $ini->variable( "CieSettings", "CsvSeparator" );
-$limitedRange = $ini->variable( "CieSettings", "ExportLimitedRange" ) == 'enabled' ? true : false;
-$removeExported = $ini->variable( "CieSettings", "RemoveExported" ) == 'enabled' ? true : false;
-
-// Test range
-if ( $limitedRange == true )
-{
-    $days = $ini->variable( "CieSettings", "DateRangeToExport" );
-}
-else
-{
-    $days = false;
-}
-
-// Export collections
-exportCollections( $collection, $dir, $format, $separator, $days, $removeExported, $debug );
-
-?>
+// The code is in extension/bccie/classes/runnable/cronjobs/exportcsv.php (#207); this file is the entry point.
+return \Exponential\Cronjob\Extension\Bccie\Exportcsv::main( __FILE__, get_defined_vars() );

@@ -9,27 +9,6 @@
  */
 
 // Settings
-$ini = eZINI::instance( "cie.ini" );
 
-$debug = $ini->variable( 'CieSettings', 'Debug' ) == 'enabled' ? true : false;
-$collection = $ini->variable( "CieSettings", "Collection" );
-$dir = $ini->variable( "CieSettings", "Directory" );
-$format = $ini->variable( "CieSettings", "SylkFormat" );
-$separator = $ini->variable( "CieSettings", "SylkSeparator" );
-$limitedRange = $ini->variable( "CieSettings", "ExportLimitedRange" ) == 'enabled' ? true : false;
-$removeExported = $ini->variable( "CieSettings", "RemoveExported" ) == 'enabled' ? true : false;
-
-// Test range
-if ( $limitedRange == true )
-{
-    $days = $ini->variable( "CieSettings", "DateRangeToExport" );
-}
-else
-{
-    $days = false;
-}
-
-// Export collections
-exportCollections( $collection, $dir, $format, $separator, $days, $removeExported, $debug );
-
-?>
+// The code is in extension/bccie/classes/runnable/cronjobs/exportsylk.php (#207); this file is the entry point.
+return \Exponential\Cronjob\Extension\Bccie\Exportsylk::main( __FILE__, get_defined_vars() );
