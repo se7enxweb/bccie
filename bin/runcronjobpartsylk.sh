@@ -1,4 +1,5 @@
 #!/bin/bash
+# @description Run the exportsylk cronjob part by hand and log it to var/log/cie.log
 
 # php ./runcronjobs.php -dall exportcsv;
 # php ./runcronjobs.php -dall exportcsv | tee var/log/cie.log

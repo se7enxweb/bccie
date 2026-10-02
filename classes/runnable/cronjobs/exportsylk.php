@@ -2,6 +2,7 @@
 /**
  * The code of extension/bccie/cronjobs/exportsylk.php, moved into a class (#207 stage 1). The file extension/bccie/cronjobs/exportsylk.php is one call to it.
  * Guide: doc/bc/6.0/cli_cronjob_view_abstractions.md
+ * @description Export the collected information to SYLK as set in cie.ini [CieSettings]
  */
 /*
  * The original header of extension/bccie/cronjobs/exportsylk.php:
