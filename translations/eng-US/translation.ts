@@ -163,7 +163,7 @@
     <name>extension/bccie</name>
     <message>
         <source>Collected information export</source>
-        <translation type="unfinished"></translation>
+        <translation>Collected information export</translation>
     </message>
 </context>
 <context>
