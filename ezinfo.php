@@ -2,9 +2,9 @@
 /**
  * File containing the bccieInfo class.
  *
+ * @copyright Copyright (C) 1998 - 2026 7x and the Exponential Foundation. All rights reserved.
  * @copyright Copyright (C) 1999 - 2017 Brookins Consulting. All rights reserved.
- * @license http://www.gnu.org/licenses/gpl-2.0.txt GNU General Public License v2 (or any later version)
- * @version //autogentag//
+ * @license GNU General Public License v2.0 (or any later version)
  * @package bccie
  */
 class bccieInfo
@@ -12,13 +12,14 @@ class bccieInfo
     static function info()
     {
         return array(
-            'Name' => "<a href='http://projects.ez.no/cie'>BC CIE</a> - Collected Information Export",
-            'Version' => "1.1.11",
-            'Copyright' => array( "Copyright (C) 1999 - 2017 <a href='http://brookinsconsulting.com'>Brookins Consulting</a>",
+            'Name' => "<a href='https://github.com/se7enxweb/bccie'>BC CIE</a> - Collected Information Export",
+            'Version' => "1.1.12",
+            'Copyright' => array( "Copyright (C) 1998 - 2026 7x and the Exponential Foundation",
+                                  "Copyright (C) 1999 - 2017 <a href='http://brookinsconsulting.com'>Brookins Consulting</a>",
                                   "Copyright (C) 2006 - 2007 <a href='http://silverhand.fr/'>Vitalis Mathias</a>" ),
-            'Author' => "Brookins Consulting and Vitalis Mathias",
+            'Author' => "7x, Brookins Consulting and Vitalis Mathias",
             'License' => "GNU General Public License v2.0 (or any later version)",
-            'info_url' => "http://github.com/brookinsconsulting/bccie"
+            'Info_url' => "https://github.com/se7enxweb/bccie"
         );
     }
 }

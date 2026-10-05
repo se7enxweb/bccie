@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" requires="ezpublish 6.0">
+  <name>BC CIE</name>
+  <summary>Collected information export: a dashboard of the forms that collected information, exports to CSV and SYLK (Excel) from the admin, in the background, from the console and from cron.</summary>
+  <version>1.1.12</version>
+  <copyright>7x</copyright>
+  <license>GNU General Public License v2.0 (or any later version)</license>
+  <info_url>https://github.com/se7enxweb/bccie</info_url>
+  <author>7x</author>
+</extension>
