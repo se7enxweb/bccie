@@ -4,17 +4,15 @@ BC CIE
 What is the BC CIE extension?
 ================================
 
-BC CIE is a true eZ Publish extension that provides cronjob parts, class methods and module views to provide easy export of collected informations from content objects into to csv or sylk (Excel) export files.
+BC CIE is a true Exponential extension that provides cronjob parts, class methods and module views to provide easy export of collected informations from content objects into to csv or sylk (Excel) export files.
 
 
 Version
 =======================
 
-The current version of BC CIE is 1.1.3
+The current version of BC CIE is 1.1.12
 
-Last Major update: January 07, 2017
-
-You can find details about changes for this version in [doc/changelogs/CHANGELOG-1.1.3.md](doc/changelogs/CHANGELOG-1.1.3.md)
+You can find details about changes for this version in [doc/changelogs/CHANGELOG-1.1.12.md](doc/changelogs/CHANGELOG-1.1.12.md)
 
 
 Copyright
@@ -61,9 +59,9 @@ Requirements
 
 The following requirements exists for using BC CIE extension:
 
-* eZ Publish version:
+* Exponential version:
 
-Make sure you use eZ Publish version 4.x (required) or higher. eZ Publish 4.6.x+ (Community Build, 2012.02+) is recommended.
+Make sure you use Exponential 6.0 or higher (legacy 4.x kernels run the 1.0 and 1.1 releases up to 1.1.11).
 
 * PHP version:
 
@@ -79,7 +77,26 @@ Details on installing BC CIE located in the file [doc/INSTALL.md](doc/INSTALL.md
 Usage
 =====
 
-Click the new "BC CIE Export" menu tab and follow the instructions on the page.
+Click the **CIE** tab of the admin (`/bccie/overview`). The start page shows the forms that collected information, the
+last exports and the problems found; open a form to choose the fields, the date range, the type (CSV or SYLK), the
+separator and the character set. A small export is written while you wait; a large one (more than `DirectExportLimit`
+collections, 2000 by default) runs in the background and the file is offered for download when it is done.
+
+The role needs `bccie/read`; removing collected information needs `bccie/remove` as well.
+
+Spreadsheet safety: a text cell that starts with `=`, `+`, `-` or `@` gets a leading single quote, so a spreadsheet
+does not run it as a formula. Text stays UTF-8; choose the `cp1252`, `utf8bom` or `utf16le` character set for older Excel versions.
+
+Console commands
+----------------
+
+    ./console ext:bccie:export --object=ID [--format=csv|sylk] [--separator=semicolon] [--charset=utf8bom] [--from=YYYY-MM-DD] [--dry-run]
+    ./console ext:bccie:export --cron [--format=sylk] [--dry-run]   # the scheduled export of cie.ini
+    ./console ext:bccie:status
+    ./console ext:bccie:purge --object=ID [--before=YYYY-MM-DD] [--dry-run] --yes
+
+Every command shows its options with `--help`. The cronjob parts `exportcsv` and `exportsylk` (`php runcronjobs.php exportcsv`)
+run the same code as `ext:bccie:export --cron`.
 
 
 Troubleshooting

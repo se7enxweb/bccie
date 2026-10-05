@@ -3,9 +3,9 @@ BC CIE TODO
 
 There are still quite a lot of features we could add to BC CIE.
 
-A few users of BC CIE may require further extension of the default eZ Publish image alias image variation image file related features.
+A few users of BC CIE may require further extension of the default Exponential image alias image variation image file related features.
 
-If you are interested in sponsoring the development of any of these features for your eZ Publish web site, please contact info@brookinsconsulting.com
+If you are interested in sponsoring the development of any of these features for your Exponential web site, please contact info@brookinsconsulting.com
 
 # Features for consideration
 

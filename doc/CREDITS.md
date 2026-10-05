@@ -46,7 +46,7 @@ Released under the GNU General Public License v2 (or any later version)
 
 * Various bugfixes and improvements from github.com/Open-Wide
 
-* Removed all deprecated ezp3 / php4 style class include 'include_once' calls. eZ Publish 3.x support for bccie is officially removed. From github.com/Open-Wide and [brookinsconsulting.com](http://brookinsconsulting.com)
+* Removed all deprecated ezp3 / php4 style class include 'include_once' calls. Exponential 3.x support for bccie is officially removed. From github.com/Open-Wide and [brookinsconsulting.com](http://brookinsconsulting.com)
 
 * Refactor to provide for using base handler as fallback during export when custom export datatype handler does not exist. From github.com/Open-Wide
 

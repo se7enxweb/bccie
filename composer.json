@@ -2,7 +2,7 @@
     "name": "se7enxweb/bccie",
     "description": "Exponential Legacy extension which provides a flexible solution for quick and simple export of collected information content in csv or sylk formatted files with Exponential Legacy. Great for reports!",
     "type": "ezpublish-legacy-extension",
-    "keywords": [ "eZ Publish", "cie", "csv", "sylk", "export", "report", "reports", "utf8" ],
+    "keywords": [ "Exponential", "cie", "csv", "sylk", "export", "report", "reports", "utf8" ],
     "homepage": "https://github.com/se7enxweb/bccie",
     "license": "GPL-2.0-or-later",
     "authors": [

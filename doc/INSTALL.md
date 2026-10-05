@@ -7,7 +7,7 @@ Introduction
 
 ## What is the BC CIE extension?
 
-BC CIE is a true eZ Publish extension that provides cronjob parts, class methods and module views to provide easy export of collected informations from contentobjects into to csv or sylk (Excel) export files.
+BC CIE is a true Exponential extension that provides cronjob parts, class methods and module views to provide easy export of collected informations from contentobjects into to csv or sylk (Excel) export files.
 
 For more information about this extension please read the [README.md](../README.md) file.
 
@@ -53,25 +53,25 @@ For more information or questions please contact: license@brookinsconsulting.com
 
 The following requirements exists for using BC CIE extension:
 
-* eZ Publish version:
+* Exponential version:
 
-Make sure you use eZ Publish version 4.x (required) or higher. eZ Publish 4.6.x+ (Community Build, 2012.02+) is recommended.
+Make sure you use Exponential 6.0 or higher (legacy 4.x kernels run the 1.0 and 1.1 releases up to 1.1.11).
 
 * PHP version:
 
 Make sure you have PHP 5.x or higher.
 
 
-Getting eZ Publish
+Getting Exponential
 ==================
 
-You can download a version of eZ Publish from share.ez.no, you will find the various versions at:
+You can download a version of Exponential from share.ez.no, you will find the various versions at:
 
 [http://share.ez.no/download](http://share.ez.no/download)
 
-NOTE: You will only require eZ Publish 4.x or higher (if you have a more recent version)
+NOTE: You will only require Exponential 4.x or higher (if you have a more recent version)
 
-Information on the installation of eZ Publish can be found at:
+Information on the installation of Exponential can be found at:
 [http://doc.ez.no/eZ-Publish/Technical-manual/4.6/Installation](http://doc.ez.no/eZ-Publish/Technical-manual/4.6/Installation)
 and
 [http://doc.ez.no](http://doc.ez.no)
@@ -86,7 +86,7 @@ Copy the extension files into the extension directory
 
 ===========================
 
-Copy the package into the `extension` directory in the root of your eZ Publish installation.
+Copy the package into the `extension` directory in the root of your Exponential installation.
 
 
 Unpack the extension package files into the extension directory
@@ -155,7 +155,7 @@ or
     sudo chmod -R 777 ../bccie;
 
 
-We must now enable the extension in eZ Publish.
+We must now enable the extension in Exponential.
 ===========================
 
 To do this edit site.ini.append(.php) in the folder
@@ -176,14 +176,14 @@ But instead of using ActiveExtensions you must add these lines instead:
     [ExtensionSettings]
     ActiveAccessExtensions[]=bccie
 
-The extension can also be activated through eZ Publish admin interface.
+The extension can also be activated through Exponential admin interface.
 An additional new menu tab "BC CIE Export" will appear in your Admin-interface.
 
 
-Regenerate eZ Publish class autoloads
+Regenerate Exponential class autoloads
 ===========================
 
-You must regenerate autoloads for extension classes to be available via eZ Publish autoloads. This may mean running the following different commands.
+You must regenerate autoloads for extension classes to be available via Exponential autoloads. This may mean running the following different commands.
 
     cd /path/to/ezpublish;
 
