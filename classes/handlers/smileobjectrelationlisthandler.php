@@ -15,14 +15,14 @@ class smileobjectrelationlistHandler extends BaseHandler
         eZDebug::writeDebug( $attribute, "SMILE" );
         $content = $attribute->content();
 
-        $relation_list = $content['relation_list'];
+        $relation_list = is_array( $content ) && isset( $content['relation_list'] ) ? $content['relation_list'] : array();
         eZDebug::writeDebug( $content, "SMILE" );
 
         $names = array();
         foreach ( $relation_list as $relation )
         {
             $object = eZContentObject::fetch( $relation['contentobject_id'] );
-            $names[] = $object->name();
+            $names[] = $object ? $object->name() : $relation['contentobject_id'];
         }
         return $this->escape( join( " ", $names ), $seperationChar );
     }

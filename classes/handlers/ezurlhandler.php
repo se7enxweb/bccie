@@ -13,7 +13,8 @@ class eZURLHandler extends BaseHandler
 
     function exportAttribute( &$attribute, $seperationChar )
     {
-        $tempstring = $attribute->content() . $seperationChar . $attribute->DataText;
+        // the address and its text in one cell: the separator must not appear in a cell on its own
+        $tempstring = trim( $attribute->content() . ' ' . $attribute->DataText );
 
         return $this->escape( $tempstring, $seperationChar );
     }

@@ -17,11 +17,11 @@ class eZObjectRelationHandler extends BaseHandler
 
         if ( $ini->variable( "ezobjectrelation", "OutputRelatedObjectNames" ) !== 'false' )
         {
-            return $this->escape( $content->name(), $seperationChar );
+            return $this->escape( is_object( $content ) ? $content->name() : '', $seperationChar );
         }
         else
         {
-            return $this->escape( $content->attribute('id' ), $seperationChar );
+            return $this->escape( is_object( $content ) ? $content->attribute( 'id' ) : '', $seperationChar );
         }
     }
 }

@@ -16,9 +16,21 @@ class eZOptionHandler extends BaseHandler
         $ret = false;
         $objectAttribute = $attribute->contentObjectAttribute();
         $objectAttributeContent = $objectAttribute->content();
-        if ( $objectAttributeContent->Options )
+        if ( is_object( $objectAttributeContent ) && is_array( $objectAttributeContent->Options ) )
         {
-            $ret = $objectAttributeContent->Options[$attribute->DataInt]['value'];
+            // the stored number is the option's id, which is not always its position in the list
+            foreach ( $objectAttributeContent->Options as $option )
+            {
+                if ( isset( $option['id'] ) && (int)$option['id'] === (int)$attribute->DataInt )
+                {
+                    $ret = $option['value'];
+                    break;
+                }
+            }
+            if ( $ret === false && isset( $objectAttributeContent->Options[$attribute->DataInt]['value'] ) )
+            {
+                $ret = $objectAttributeContent->Options[$attribute->DataInt]['value'];
+            }
         }
 
         return $this->escape( $ret, $seperationChar );

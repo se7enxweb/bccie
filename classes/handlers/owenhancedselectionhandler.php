@@ -14,7 +14,7 @@ class OWEnhancedSelectionHandler extends BaseHandler
     function exportAttribute( &$attribute, $seperationChar )
     {
         $content = $attribute->attribute('content');
-        return $this->escape( $content['to_string'], $seperationChar );
+        return $this->escape( is_array( $content ) && isset( $content['to_string'] ) ? $content['to_string'] : $content, $seperationChar );
     }
 
 }

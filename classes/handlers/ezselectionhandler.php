@@ -36,9 +36,9 @@ class eZSelectionHandler extends BaseHandler
             // multi-selection
             $arrayRet = array();
 
-            foreach ( $content as $selectionID )
+            foreach ( (array)$content as $selectionID )
             {
-                $arrayRet[] = $GLOBALS[$attGlobalKey][$selectionID];
+                $arrayRet[] = isset( $GLOBALS[$attGlobalKey][$selectionID] ) ? $GLOBALS[$attGlobalKey][$selectionID] : $selectionID;
             }
 
             $ret = implode( ', ', $arrayRet );

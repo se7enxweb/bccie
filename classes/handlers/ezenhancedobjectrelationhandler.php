@@ -14,7 +14,7 @@ class ezenhancedobjectrelationHandler extends BaseHandler
     function exportAttribute( &$attribute, $seperationChar )
     {
         $content = $attribute->content();
-        $id_list = $content['id_list'];
+        $id_list = is_array( $content ) && isset( $content['id_list'] ) ? $content['id_list'] : array();
 
         $ini = eZINI::instance( "export.ini" );
         if ( $ini->variable( "ezenhancedobjectrelation", "OutputRelatedObjectNames" )  !== 'false' )
@@ -23,7 +23,7 @@ class ezenhancedobjectrelationHandler extends BaseHandler
             foreach ( $id_list as $id )
             {
                 $object = eZContentObject::fetch( $id );
-                $names[] = $object->name();
+                $names[] = $object ? $object->name() : $id;
             }
 
             return $this->escape( join( " ", $names ), $seperationChar );

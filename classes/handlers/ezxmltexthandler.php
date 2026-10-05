@@ -12,9 +12,9 @@ class eZXMLTextHandler extends BaseHandler
 {
     function exportAttribute( &$attribute, $seperationChar )
     {
-        $content =& $attribute->content();
+        $content = $attribute->content();
 
-        return $this->escape( $content->XMLData, $seperationChar );
+        return $this->escape( is_object( $content ) ? $content->XMLData : $content, $seperationChar );
     }
 }
 

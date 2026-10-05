@@ -15,9 +15,9 @@ class eZCountryHandler extends BaseHandler
         $ret = false;
         $objectAttribute = $attribute->contentObjectAttribute();
         $objectAttributeContent = $attribute->content();
-        if ( $objectAttributeContent['value'] )
+        if ( is_array( $objectAttributeContent ) && !empty( $objectAttributeContent['value'] ) )
         {
-            $ret = $objectAttributeContent['value'][$attribute->DataText]['Name'];
+            $ret = isset( $objectAttributeContent['value'][$attribute->DataText]['Name'] ) ? $objectAttributeContent['value'][$attribute->DataText]['Name'] : $attribute->DataText;
         }
 
         return $this->escape( $ret, $seperationChar );
