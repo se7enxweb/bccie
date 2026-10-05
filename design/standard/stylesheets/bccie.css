@@ -1,0 +1,98 @@
+/* CIE: the start page, the lists and the detail views. Uses the admin4 tokens (--a4-*) with fallbacks,
+   so it follows the light and the dark look; no external stylesheet. */
+
+.cie { --cie-line: var(--a4-line, #e3e6eb); --cie-muted: var(--a4-muted, #5d6573); --cie-ink: var(--a4-ink, #1f2430);
+       --cie-soft: var(--a4-soft, #f6f7f9); --cie-accent: var(--a4-orange, #f26a21); }
+.cie-muted { color: var(--cie-muted); font-size: 0.92em; }
+.cie code, .cie .cie-mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.92em; }
+.cie .box-content { padding-bottom: 0.6em; }
+
+/* Status strip */
+.cie-status { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6em 1.6em; padding: 0.8em 1em; border: 1px solid var(--cie-line); border-radius: 8px; background: var(--cie-soft); }
+.cie-status-facts { display: flex; flex-wrap: wrap; gap: 0.3em 1.4em; color: var(--cie-muted); }
+.cie-status-facts strong { color: var(--cie-ink); }
+
+/* Pills */
+.cie-pill { display: inline-flex; align-items: center; gap: 0.3em; padding: 0.12em 0.65em; border-radius: 999px; border: 1px solid var(--cie-line); font-size: 0.88em; font-weight: 600; white-space: nowrap; }
+.cie-pill.is-ok { background: rgba(47, 143, 70, 0.14); border-color: rgba(47, 143, 70, 0.4); }
+.cie-pill.is-warn { background: rgba(208, 138, 0, 0.16); border-color: rgba(208, 138, 0, 0.45); }
+.cie-pill.is-bad { background: rgba(179, 38, 30, 0.14); border-color: rgba(179, 38, 30, 0.45); }
+.cie-pill.is-info { background: rgba(58, 110, 165, 0.14); border-color: rgba(58, 110, 165, 0.4); }
+.cie-pill.is-muted { background: transparent; color: var(--cie-muted); }
+
+/* Cards */
+.cie-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(19em, 1fr)); gap: 0.9em; margin: 1em 0 0.4em 0; }
+.cie-card { display: flex; flex-direction: column; gap: 0.5em; margin: 0; padding: 0.9em 1em; border: 1px solid var(--cie-line); border-radius: 8px; background: var(--a4-card-bg, #fff); }
+.cie-card h2, .cie-card h3 { margin: 0; font-size: 1.02em; }
+.cie-card p { margin: 0; }
+.cie-card .cie-big { font-size: 1.9em; font-weight: 700; line-height: 1.1; }
+.cie-card .cie-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5em; }
+.cie-card .cie-links { margin-top: auto; display: flex; flex-wrap: wrap; gap: 0.5em; }
+.cie-stats { display: flex; flex-wrap: wrap; gap: 0.4em 1.4em; margin: 0; padding: 0; list-style: none; }
+.cie-stats li { display: flex; flex-direction: column; }
+.cie-stats strong { font-size: 1.25em; }
+
+/* Problems */
+.cie-problems { margin: 0.6em 0 0 0; padding: 0; list-style: none; border: 1px solid var(--cie-line); border-radius: 8px; overflow: hidden; }
+.cie-problems li { display: flex; align-items: center; gap: 0.7em; padding: 0.5em 0.9em; border-top: 1px solid var(--cie-line); }
+.cie-problems li:first-child { border-top: 0; }
+.cie-problems li span.cie-pill { flex: none; min-width: 5.2em; justify-content: center; }
+.cie-ok { padding: 0.8em 1em; border: 1px solid rgba(47, 143, 70, 0.4); border-radius: 8px; background: rgba(47, 143, 70, 0.12); }
+
+/* Filter bar and lists */
+.cie-filter { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 0.6em 1em; margin: 0 0 0.9em 0; padding: 0.7em 0.9em; border: 1px solid var(--cie-line); border-radius: 8px; background: var(--cie-soft); }
+.cie-filter label { display: flex; flex-direction: column; gap: 0.2em; font-weight: bold; font-size: 0.9em; }
+.cie-filter input[type=search], .cie-filter input[type=text] { font-weight: normal; min-width: 14em; }
+.cie-filter .cie-spacer { margin-left: auto; }
+.cie-table { width: 100%; }
+.cie-table th a { text-decoration: none; color: inherit; }
+.cie-table th a.is-sorted::after { content: " \25B2"; font-size: 0.75em; }
+.cie-table th a.is-sorted.is-desc::after { content: " \25BC"; }
+.cie-table td.cie-num, .cie-table th.cie-num { text-align: right; }
+.cie-table td.cie-actions { white-space: nowrap; }
+.cie-table .cie-wrap { word-break: break-word; }
+.cie-empty { padding: 1.4em; text-align: center; color: var(--cie-muted); border: 1px dashed var(--cie-line); border-radius: 8px; }
+.cie-empty p { margin: 0.2em 0; }
+.cie-pager { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5em; margin: 0.6em 0 0 0; color: var(--cie-muted); }
+.cie-pager a, .cie-pager span.cie-page { padding: 0.1em 0.6em; border: 1px solid var(--cie-line); border-radius: 6px; text-decoration: none; }
+.cie-pager span.cie-page.is-current { background: var(--cie-accent); border-color: var(--cie-accent); color: #fff; }
+
+/* Confirmation */
+.cie-confirm { margin: 0 0 1em 0; padding: 0.9em 1em; border: 1px solid rgba(179, 38, 30, 0.5); border-radius: 8px; background: rgba(179, 38, 30, 0.1); }
+.cie-confirm h2 { margin: 0 0 0.4em 0; font-size: 1.05em; }
+.cie-confirm ul { margin: 0.3em 0 0.8em 1.2em; }
+.cie .cie-danger { color: #b3261e; }
+
+/* Detail views */
+.cie-kv { display: grid; grid-template-columns: max-content 1fr; gap: 0.35em 1.2em; margin: 0.4em 0 0 0; }
+.cie-kv dt { font-weight: bold; }
+.cie-kv dd { margin: 0; word-break: break-word; }
+.cie-form-error { color: #b3261e; font-size: 0.92em; margin: 0.2em 0 0 0; }
+.cie-field-error input[type=text], .cie-field-error textarea { border-color: #b3261e; }
+.cie-hint { color: var(--cie-muted); font-size: 0.9em; margin: 0.2em 0 0 0; }
+
+@media (max-width: 640px) {
+    .cie-kv { grid-template-columns: 1fr; }
+    .cie-kv dt { margin-top: 0.4em; }
+    .cie-filter input[type=search], .cie-filter input[type=text] { min-width: 0; width: 100%; }
+    .cie-filter .cie-spacer { margin-left: 0; }
+    .cie-table { display: block; overflow-x: auto; }
+}
+
+/* Background run */
+.cie-log { margin: 0; padding: 0.6em 0.8em; max-height: 14em; overflow: auto; border-radius: 6px; background: #1d2733; color: #e6edf3; font-size: 0.85em; line-height: 1.45; white-space: pre-wrap; word-break: break-word; }
+.cie-log:empty { display: none; }
+
+/* Export form */
+.cie-form fieldset { margin: 0 0 1em 0; padding: 0.8em 1em; border: 1px solid var(--cie-line); border-radius: 8px; }
+.cie-form legend { font-weight: bold; padding: 0 0.4em; }
+.cie-form .cie-grid { display: flex; flex-wrap: wrap; gap: 0.5em 1.6em; }
+.cie-form label.cie-check { display: inline-flex; align-items: center; gap: 0.4em; font-weight: normal; }
+.cie-form label.cie-field { display: flex; flex-direction: column; gap: 0.2em; font-weight: bold; }
+.cie-form label.cie-field input, .cie-form label.cie-field select { font-weight: normal; }
+.cie-form .cie-actions { display: flex; flex-wrap: wrap; gap: 0.6em; align-items: center; }
+.cie-form-error { color: #b3261e; font-size: 0.92em; margin: 0.3em 0; }
+.cie-progress { height: 0.6em; border-radius: 999px; background: var(--cie-line); overflow: hidden; }
+.cie-progress > span { display: block; height: 100%; width: 0; background: var(--cie-accent); transition: width 0.3s; }
+.cie-danger-zone { margin-top: 1.4em; padding: 0.8em 1em; border: 1px solid rgba(179, 38, 30, 0.4); border-radius: 8px; }
+.cie-danger-zone h2 { margin: 0 0 0.3em 0; font-size: 1.02em; }
