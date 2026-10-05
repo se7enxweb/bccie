@@ -20,7 +20,8 @@ ExportLimitedRange=disabled
 # Number of days in the past to export. Must enable, 'ExportLimitedRange' to use
 DateRangeToExport=7
 
-# Remove records after export (Required but not implemented)
+# Remove the collected information after the scheduled export wrote it to a file
+# (only what the file holds; nothing is removed when the file could not be written)
 # RemoveExported=enabled
 RemoveExported=disabled
 
@@ -55,6 +56,13 @@ SylkSeparator=;
 # Optional setting to export an empty
 # string instead of "0" collected value
 ExportZeroToEmptyString=disabled
+
+# The user (ID) the cronjob parts and the console commands run as
+CronUser=14
+
+# An export of the admin that has more collections than this runs in the background,
+# the file is offered for download when it is done
+DirectExportLimit=2000
 
 # Required setting to control the maximum export
 # execution time limit

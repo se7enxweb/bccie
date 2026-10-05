@@ -63,7 +63,7 @@
     <td>{$Objects.item.first_collection|l10n( shortdatetime )}</td>
     <td>{$Objects.item.last_collection|l10n( shortdatetime )}</td>
     <td class="number" align="right"><a href={concat( '/infocollector/collectionlist/', $Objects.item.contentobject_id )|ezurl}>{$Objects.item.collections}</a></td>
-    <td align="right"><a href={concat( '/bccie/export/', $Objects.contentobject_id )|ezurl}>{'Export'|i18n( 'design/bccie/overview' )}</a></td>
+    <td align="right"><a href={concat( '/bccie/export/', $Objects.item.contentobject_id )|ezurl}>{'Export'|i18n( 'design/bccie/overview' )}</a></td>
 </tr>
 {/section}
 </table>

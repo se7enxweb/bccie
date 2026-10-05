@@ -1,4 +1,5 @@
 <?php
+// @description Export the collected information of the objects in cie.ini [CieSettings] Collection[] to CSV files
 /**
  * File containing the eZCollectExport ExportCSV Cronjob.
  *

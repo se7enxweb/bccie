@@ -29,103 +29,13 @@ class Doexport extends \Exponential\Runnable\ModuleView
                 ${$__name} = &$scope[$__name];
         unset( $__name );
 
-        $http = \eZHTTPTool::instance();
-        $module = $Params['Module'];
-        $objectID = $Params['ObjectID'];
-
-        $cieINI = \eZINI::instance( 'cie.ini' );
-        $exportExecutionTimeLimit = $cieINI->variable( 'CieSettings', 'ExportExecutionTimeLimit' );
-
-        set_time_limit( $exportExecutionTimeLimit );
-
-        $object = false;
-        $exportCreationDate = false;
-        $exportModificationDate = false;
-
-        if ( is_numeric( $objectID ) )
+        // The address of the export form of earlier versions: the form posts here, the page does the same as bccie/export.
+        if ( !\eZHTTPTool::instance()->hasPostVariable( 'DoExport' ) && !\eZHTTPTool::instance()->hasPostVariable( 'RunBackgroundButton' ) )
         {
-            $object = \eZContentObject::fetch( $objectID );
+            return $Params['Module']->redirectTo( 'bccie/export/' . (int)$Params['ObjectID'] );
         }
 
-        if ( !$object )
-        {
-            return $this->viewResult( isset( $Result ) ? $Result : null,  $module->handleError( \eZError::KERNEL_NOT_AVAILABLE, 'kernel' ) );
-        }
-
-        $conditions = array( 'contentobject_id' => $objectID );
-
-        $dateConditions = \bccieExportUtils::getDateConditions( $http );
-
-        if ( $dateConditions['conditions'] != null )
-        {
-            $conditions['created'] = $dateConditions['conditions'];
-        }
-
-        $collections = \eZPersistentObject::fetchObjectList(
-            \eZInformationCollection::definition(),
-            null,
-            $conditions,
-            false,
-            false
-        );
-
-        // TODO: change error handler
-        if ( !$collections )
-        {
-            return $this->viewResult( isset( $Result ) ? $Result : null,  $module->handleError( \eZError::KERNEL_NOT_AVAILABLE, 'kernel' ) );
-        }
-
-        $counter = 0;
-        $attributesToExport = array();
-
-        while ( true )
-        {
-            $currentattribute = $http->postVariable( "field_$counter" );
-            if ( !$currentattribute )
-            {
-                break;
-            }
-            $attributesToExport[] = $currentattribute;
-            $counter++;
-        }
-
-        if ( $http->hasPostVariable( "creation_date" ) )
-        {
-           $exportCreationDate = true;
-        }
-
-        if ( $http->hasPostVariable( "modification_date" ) )
-        {
-           $exportModificationDate = true;
-        }
-
-        $separationCharacter = $http->postVariable( "separation_char" );
-        $exportFormat = $http->postVariable( "export_type" );
-
-        $filename = \bccieExportUtils::getFileName( $exportFormat, $object );
-
-        $parser = new \Parser( $objectID );
-
-        $export_string = $parser->exportInformationCollection(
-            $collections,
-            $attributesToExport,
-            $separationCharacter,
-            $exportFormat,
-            $dateConditions['days'],
-            $exportCreationDate,
-            $exportModificationDate
-        );
-
-        $exportFormatOutputHandler = \bccieExportFormatOutputHandler::instance();
-        $exportFormatOutputHandler->setOutputFileName( $filename );
-
-        $exportFormatOutputHandler = $exportFormatOutputHandler->output( $export_string );
-
-        flush();
-
-        \eZExecution::cleanExit();
-
-        return $this->viewResult( isset( $Result ) ? $Result : null, null );
+        return $this->viewResult( \bccieExportPage::handle( $Params['Module'], $Params ), null );
     }
 }
 

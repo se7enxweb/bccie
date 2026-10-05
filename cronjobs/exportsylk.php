@@ -1,4 +1,5 @@
 <?php
+// @description Export the collected information of the objects in cie.ini [CieSettings] Collection[] to SYLK files
 /**
  * File containing the eZCollectExport ExportSylk Cronjob.
  *

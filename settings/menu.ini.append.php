@@ -1,7 +1,7 @@
-<?php /* #?ini charset="utf-8"?                                                                                         
+<?php /* #?ini charset="utf-8"?
 
 [NavigationPart]
-Part[ezbccienavigationpart]=BC CIE Export
+Part[ezbccienavigationpart]=CIE
 
 [TopAdminMenu]
 Tabs[]=bccie_overview
@@ -23,11 +23,30 @@ Shown[navigation]=true
 Shown[browse]=true
 PolicyList[]=bccie/read
 
+# The left menu of the module (parts/bccie/menu.tpl)
+[Leftmenu_bccie]
+Name=CIE
+Links[]
+Links[overview]=bccie/overview
+Links[collected]=infocollector/overview
+Links[project]=https://github.com/se7enxweb/bccie
+LinkNames[]
+LinkNames[overview]=Collected information export
+LinkNames[collected]=Collected information
+LinkNames[project]=Extension project
+Enabled[]
+Enabled[default]=true
+Enabled[edit]=false
+Enabled[browse]=false
+PolicyList_overview[]=bccie/read
+PolicyList_collected[]=infocollector/read
+
+# Kept for installations whose settings name this block
 [Leftmenu_bccie_overview]
-Name=BC CIE
+Name=CIE
 Links[]
 LinkNames[]
 Links[Export]=bccie/overview
-Links[Extension project]=http://projects.ez.no/bccie
+Links[Extension project]=https://github.com/se7enxweb/bccie
 
 */ ?>

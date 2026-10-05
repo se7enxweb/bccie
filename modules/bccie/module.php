@@ -18,7 +18,7 @@
 // Inspired from the csv export module from Gabriel Ambuehl.
 
 // Define module name
-$Module = array( 'name' => 'Export Collected Information Objects for eZ Publish' );
+$Module = array( 'name' => 'Export Collected Information Objects' );
 
 // Define module view and parameters
 $ViewList = array();
@@ -55,6 +55,28 @@ $ViewList['doexport'] = array(
     'unordered_params' => array()
 );
 
+// the file of an export that ran in the background
+$ViewList['download'] = array(
+    'script' => 'download.php',
+    'functions' => array( 'read' ),
+    'default_navigation_part' => 'ezbccienavigationpart',
+    'ui_context' => 'view',
+    'params' => array( 'JobID' ),
+    'unordered_params' => array()
+);
+
+// the state and the output of an export in the background, as JSON
+$ViewList['job'] = array(
+    'script' => 'job.php',
+    'functions' => array( 'read' ),
+    'default_navigation_part' => 'ezbccienavigationpart',
+    'ui_context' => 'view',
+    'params' => array( 'JobID' ),
+    'unordered_params' => array()
+);
+
+// read: the views, the exports and the files; remove: removing collected information
 $FunctionList['read'] = array();
+$FunctionList['remove'] = array();
 
 ?>

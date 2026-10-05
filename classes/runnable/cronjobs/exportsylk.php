@@ -1,57 +1,34 @@
 <?php
 /**
- * The code of extension/bccie/cronjobs/exportsylk.php, moved into a class (#207 stage 1). The file extension/bccie/cronjobs/exportsylk.php is one call to it.
- * Guide: doc/bc/6.0/cli_cronjob_view_abstractions.md
- * @description Export the collected information to SYLK as set in cie.ini [CieSettings]
- */
-/*
- * The original header of extension/bccie/cronjobs/exportsylk.php:
- *
- *
- * File containing the eZCollectExport ExportSylk Cronjob.
- *
- * @copyright Copyright (C) 1999 - 2017 Brookins Consulting. All rights reserved.
- * @license http://www.gnu.org/licenses/gpl-2.0.txt GNU General Public License v2 (or any later version)
- * @version //autogentag//
+ * @copyright Copyright (C) 1998 - 2026 7x and the Exponential Foundation. All rights reserved.
+ * @license GNU General Public License v2.0 (or any later version)
  * @package bccie
- *
  */
 
 namespace Exponential\Cronjob\Extension\Bccie
 {
 
+/**
+ * Cronjob part exportsylk: writes the collected information of the objects in [CieSettings] Collection[] to SYLK files
+ * in [CieSettings] Directory. runcronjobs.php runs the part's file cronjobs/exportsylk.php, which is one call to this
+ * class. The console command ext:bccie:export --cron --format=sylk runs the same code.
+ */
 class Exportsylk extends \Exponential\Runnable\CronjobPart
 {
     public function run( array $scope )
     {
-        // the including function's variables ($Params, $Module, $cli, ...)
-        foreach ( array_keys( $scope ) as $__name )
-            if ( $__name !== 'this' && $__name !== 'scope' )
-                ${$__name} = &$scope[$__name];
-        unset( $__name );
-
-        $ini = \eZINI::instance( "cie.ini" );
-
-        $debug = $ini->variable( 'CieSettings', 'Debug' ) == 'enabled' ? true : false;
-        $collection = $ini->variable( "CieSettings", "Collection" );
-        $dir = $ini->variable( "CieSettings", "Directory" );
-        $format = $ini->variable( "CieSettings", "SylkFormat" );
-        $separator = $ini->variable( "CieSettings", "SylkSeparator" );
-        $limitedRange = $ini->variable( "CieSettings", "ExportLimitedRange" ) == 'enabled' ? true : false;
-        $removeExported = $ini->variable( "CieSettings", "RemoveExported" ) == 'enabled' ? true : false;
-
-        // Test range
-        if ( $limitedRange == true )
+        @ini_set( 'memory_limit', '512M' );
+        $cli = isset( $scope['cli'] ) ? $scope['cli'] : \eZCLI::instance();
+        \bccieRunner::loginCronUser();
+        $totals = \bccieRunner::runCron( 'sylk', $cli, false, 'cron' );
+        if ( $totals['locked'] )
         {
-            $days = $ini->variable( "CieSettings", "DateRangeToExport" );
+            $cli->output( 'Another export is running; this run does nothing.' );
+            return false;
         }
-        else
-        {
-            $days = false;
-        }
+        $cli->output( 'Export done: ' . $totals['objects'] . ' objects, ' . $totals['rows'] . ' collections written to ' . $totals['files'] . ' files.' );
 
-        // Export collections
-        exportCollections( $collection, $dir, $format, $separator, $days, $removeExported, $debug );
+        return $totals['ok'] && !$totals['errors'];
     }
 }
 
