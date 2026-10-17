@@ -13,7 +13,7 @@ class bccieInfo
     {
         return array(
             'Name' => "<a href='https://github.com/se7enxweb/bccie'>BC CIE</a> - Collected Information Export",
-            'Version' => "1.1.15",
+            'Version' => "1.1.16",
             'Copyright' => array( "Copyright (C) 1998 - 2026 7x and the Exponential Foundation",
                                   "Copyright (C) 1999 - 2017 <a href='http://brookinsconsulting.com'>Brookins Consulting</a>",
                                   "Copyright (C) 2006 - 2007 <a href='http://silverhand.fr/'>Vitalis Mathias</a>" ),
