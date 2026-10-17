@@ -1,13 +1,11 @@
 {*
-  The left menu of the module: the links come from menu.ini [Leftmenu_bccie]. Used in every admin design, because the
-  navigation part ezbccienavigationpart names it (parts/<name without ez and navigationpart>/menu.tpl).
+  The left menu of the module: the links come from menu.ini [Leftmenu_bccie] (parts/bccie/menu_items.tpl). Used in every
+  admin design without its own copy, because the navigation part ezbccienavigationpart names it (parts/<name without ez
+  and navigationpart>/menu.tpl). admin4 has its own (design/admin4), with admin4's width switch.
 *}
-{include uri='design:parts/ini_menu.tpl' ini_section='Leftmenu_bccie' i18n_hash=hash(
-    'overview', 'Collected information export'|i18n( 'extension/bccie' ),
-    'collected', 'Collected information'|i18n( 'extension/bccie' ),
-    'project', 'Extension project'|i18n( 'extension/bccie' ) )}
+{include uri='design:parts/bccie/menu_items.tpl'}
 
-{* Left menu width control. *}
+{* Left menu width control: the links of the classic admin designs, as the kernel's menus there draw them. *}
 <div id="widthcontrol-links" class="widthcontrol">
 <p>
 {switch match=ezpreference( 'admin_left_menu_size' )}
