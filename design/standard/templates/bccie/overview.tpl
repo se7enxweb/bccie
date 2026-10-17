@@ -105,7 +105,7 @@
         <form name="objects" action={'bccie/overview'|ezurl} method="post">
         <table class="list cie-table">
             <tr>
-                {if $can_remove}<th class="tight"><input type="checkbox" data-cie-check-all="1" title="{'Select all'|i18n( 'extension/bccie' )|wash}" /></th>{/if}
+                {if $can_remove}<th class="tight"><input type="checkbox" data-cie-check-all="1" title="{'Select all'|i18n( 'extension/bccie' )|wash}" aria-label="{'Select all'|i18n( 'extension/bccie' )|wash}" /></th>{/if}
                 <th><a href={concat( 'bccie/overview', $qpart, '/(sort)/name/(order)/', cond( eq( $vp.sort, 'name' ), $other_order, 'asc' ) )|ezurl} class="{if eq( $vp.sort, 'name' )}is-sorted{if eq( $vp.order, 'desc' )} is-desc{/if}{/if}">{'Name'|i18n( 'extension/bccie' )}</a></th>
                 <th>{'Type'|i18n( 'extension/bccie' )}</th>
                 <th><a href={concat( 'bccie/overview', $qpart, '/(sort)/first_collection/(order)/', cond( eq( $vp.sort, 'first_collection' ), $other_order, 'asc' ) )|ezurl} class="{if eq( $vp.sort, 'first_collection' )}is-sorted{if eq( $vp.order, 'desc' )} is-desc{/if}{/if}">{'First collection'|i18n( 'extension/bccie' )}</a></th>
