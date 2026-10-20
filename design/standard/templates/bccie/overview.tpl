@@ -35,8 +35,8 @@
                 {if $totals.newest}<span>{'Newest'|i18n( 'extension/bccie' )}: <strong>{$totals.newest|l10n( 'shortdatetime' )}</strong></span>{/if}
             </div>
             <div>
-                {if $summary.attention}<span class="cie-pill is-warn">{'%count to look at'|i18n( 'extension/bccie',, hash( '%count', $summary.attention ) )}</span>
-                {else}<span class="cie-pill is-ok">{'No problems'|i18n( 'extension/bccie' )}</span>{/if}
+                {if $summary.attention}<span class="a4-badge is-warn">{'%count to look at'|i18n( 'extension/bccie',, hash( '%count', $summary.attention ) )}</span>
+                {else}<span class="a4-badge is-ok">{'No problems'|i18n( 'extension/bccie' )}</span>{/if}
             </div>
         </div>
 
@@ -72,7 +72,7 @@
             <section class="cie-card">
                 <h2>{'Large exports'|i18n( 'extension/bccie' )}</h2>
                 <p class="cie-muted">{'An export of more than %limit collections runs in the background; the file is offered for download when it is done.'|i18n( 'extension/bccie',, hash( '%limit', $summary.cron.direct_limit ) )}</p>
-                <p>{if $summary.background}<span class="cie-pill is-ok">{'Background runs available'|i18n( 'extension/bccie' )}</span>{else}<span class="cie-pill is-warn">{'Background runs not available'|i18n( 'extension/bccie' )}</span>{/if}</p>
+                <p>{if $summary.background}<span class="a4-badge is-ok">{'Background runs available'|i18n( 'extension/bccie' )}</span>{else}<span class="a4-badge is-warn">{'Background runs not available'|i18n( 'extension/bccie' )}</span>{/if}</p>
             </section>
         </div>
 
@@ -82,7 +82,7 @@
             <ul class="cie-problems">
                 {foreach $summary.problems as $problem}
                 <li>
-                    <span class="cie-pill {cond( eq( $problem.level, 'error' ), 'is-bad', eq( $problem.level, 'warning' ), 'is-warn', 'is-info' )}">{cond( eq( $problem.level, 'error' ), 'Problem'|i18n( 'extension/bccie' ), eq( $problem.level, 'warning' ), 'Warning'|i18n( 'extension/bccie' ), 'Hint'|i18n( 'extension/bccie' ) )}</span>
+                    <span class="a4-badge {cond( eq( $problem.level, 'error' ), 'is-bad', eq( $problem.level, 'warning' ), 'is-warn', 'is-info' )}">{cond( eq( $problem.level, 'error' ), 'Problem'|i18n( 'extension/bccie' ), eq( $problem.level, 'warning' ), 'Warning'|i18n( 'extension/bccie' ), 'Hint'|i18n( 'extension/bccie' ) )}</span>
                     <span>{$problem.text|wash}{if $problem.url} <a href={$problem.url|ezurl}>{'Open'|i18n( 'extension/bccie' )}</a>{/if}</span>
                 </li>
                 {/foreach}

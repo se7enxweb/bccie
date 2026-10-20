@@ -1,5 +1,5 @@
-/* CIE: the start page, the lists and the detail views. Uses the admin4 tokens (--a4-*) with fallbacks,
-   so it follows the light and the dark look; no external stylesheet. */
+/* CIE: the start page, the lists and the detail views. Uses the admin tokens (--a4-*) with fallbacks,
+   so it follows the light and the dark look, and the shared badge .a4-badge of components.css. */
 
 .cie { --cie-line: var(--a4-line, #e3e6eb); --cie-muted: var(--a4-muted, #5d6573); --cie-ink: var(--a4-ink, #1f2430);
        --cie-soft: var(--a4-soft, #f6f7f9); --cie-accent: var(--a4-orange, #f26a21); }
@@ -12,13 +12,8 @@
 .cie-status-facts { display: flex; flex-wrap: wrap; gap: 0.3em 1.4em; color: var(--cie-muted); }
 .cie-status-facts strong { color: var(--cie-ink); }
 
-/* Pills */
-.cie-pill { display: inline-flex; align-items: center; gap: 0.3em; padding: 0.12em 0.65em; border-radius: 999px; border: 1px solid var(--cie-line); font-size: 0.88em; font-weight: 600; white-space: nowrap; }
-.cie-pill.is-ok { background: rgba(47, 143, 70, 0.14); border-color: rgba(47, 143, 70, 0.4); }
-.cie-pill.is-warn { background: rgba(208, 138, 0, 0.16); border-color: rgba(208, 138, 0, 0.45); }
-.cie-pill.is-bad { background: rgba(179, 38, 30, 0.14); border-color: rgba(179, 38, 30, 0.45); }
-.cie-pill.is-info { background: rgba(58, 110, 165, 0.14); border-color: rgba(58, 110, 165, 0.4); }
-.cie-pill.is-muted { background: transparent; color: var(--cie-muted); }
+/* Badges: the shared .a4-badge (is-ok, is-warn, is-bad, is-info) of the admin components (components.css, design.ini
+   AdminComponentCSSFileList), which every admin design loads before this file; no pill of its own. */
 
 /* Cards */
 .cie-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(19em, 1fr)); gap: 0.9em; margin: 1em 0 0.4em 0; }
@@ -36,7 +31,7 @@
 .cie-problems { margin: 0.6em 0 0 0; padding: 0; list-style: none; border: 1px solid var(--cie-line); border-radius: 8px; overflow: hidden; }
 .cie-problems li { display: flex; align-items: center; gap: 0.7em; padding: 0.5em 0.9em; border-top: 1px solid var(--cie-line); }
 .cie-problems li:first-child { border-top: 0; }
-.cie-problems li span.cie-pill { flex: none; min-width: 5.2em; justify-content: center; }
+.cie-problems li span.a4-badge { flex: none; min-width: 5.2em; justify-content: center; }
 .cie-ok { padding: 0.8em 1em; border: 1px solid rgba(47, 143, 70, 0.4); border-radius: 8px; background: rgba(47, 143, 70, 0.12); }
 
 /* Filter bar and lists */
