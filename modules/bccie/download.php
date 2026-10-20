@@ -10,7 +10,9 @@
 // The file of an export that ran in the background.
 $module = $Params['Module'];
 $jobID = (string)$Params['JobID'];
-$path = bccieJob::isID( $jobID ) ? bccieJob::exportFile( $jobID ) : false;
+// only the user who started the export, and only while that user can read the object; any other job is answered
+// as one that does not exist
+$path = bccieJob::isID( $jobID ) && bccieJob::accessible( $jobID ) ? bccieJob::exportFile( $jobID ) : false;
 
 if ( !$path )
 {

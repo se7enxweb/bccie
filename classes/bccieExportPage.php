@@ -193,7 +193,7 @@ class bccieExportPage
         {
             if ( (int)$entry['object_id'] === $objectID )
             {
-                $entry['downloadable'] = !empty( $entry['job'] ) && bccieJob::exportFile( $entry['job'] );
+                $entry['downloadable'] = !empty( $entry['job'] ) && bccieJob::isID( $entry['job'] ) && bccieJob::accessible( $entry['job'] ) && bccieJob::exportFile( $entry['job'] );
                 $history[] = $entry;
             }
         }

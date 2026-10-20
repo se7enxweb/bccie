@@ -9,7 +9,8 @@
 
 // The state of an export in the background as JSON: status (starting, running, done, failed), the result and the last log lines.
 $jobID = (string)$Params['JobID'];
-$state = bccieJob::isID( $jobID ) ? bccieJob::status( $jobID ) : false;
+// only the user who started the export, and only while that user can read the object; any other job is unknown
+$state = bccieJob::isID( $jobID ) && bccieJob::accessible( $jobID ) ? bccieJob::status( $jobID ) : false;
 
 header( 'Content-Type: application/json; charset=utf-8' );
 header( 'Cache-Control: no-store' );
