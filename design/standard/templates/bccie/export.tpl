@@ -41,7 +41,7 @@
                     <label class="cie-check"><input type="checkbox" name="include_id" value="1"{if $include_id} checked="checked"{/if} /> {'Collection ID'|i18n( 'extension/bccie' )}</label>
                     {foreach $attributes as $attribute}
                     <label class="cie-check"><input type="checkbox" name="columns[]" value="{$attribute.id}"{if $attribute.checked} checked="checked"{/if} /> {$attribute.name|wash} <span class="cie-muted">[{$attribute.id}]</span>
-                        {if $attribute.exportable|not}<span class="cie-pill is-info" title="{'This datatype has no export handler; its stored text is exported.'|i18n( 'extension/bccie' )|wash}">{$attribute.datatype|wash}</span>{/if}</label>
+                        {if $attribute.exportable|not}<span class="a4-badge is-info" title="{'This datatype has no export handler; its stored text is exported.'|i18n( 'extension/bccie' )|wash}">{$attribute.datatype|wash}</span>{/if}</label>
                     {/foreach}
                 </div>
                 {if $errors.fields}<p class="cie-form-error">{$errors.fields|wash}</p>{/if}

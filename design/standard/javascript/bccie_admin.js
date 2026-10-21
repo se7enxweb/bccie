@@ -23,7 +23,7 @@
         } catch (e) {
             labels = {};
         }
-        var classes = { starting: 'is-info', running: 'is-warn', done: 'is-ok', failed: 'is-bad', unknown: 'is-muted' };
+        var classes = { starting: 'is-info', running: 'is-warn', done: 'is-ok', failed: 'is-bad', unknown: '' };
 
         function poll() {
             fetch(box.getAttribute('data-url'), { credentials: 'same-origin', headers: { 'Accept': 'application/json' } })
@@ -31,7 +31,7 @@
                 .then(function (job) {
                     var status = document.getElementById('cie-job-status');
                     status.textContent = labels[job.status] || job.status;
-                    status.className = 'cie-pill ' + (classes[job.status] || 'is-muted');
+                    status.className = ('a4-badge ' + (classes[job.status] || '')).trim();
                     document.getElementById('cie-job-log').textContent = (job.log || []).join('\n');
                     var result = job.result || {};
                     var parts = [];

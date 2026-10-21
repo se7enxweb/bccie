@@ -58,7 +58,8 @@ class bccieJob
         $id = date( 'YmdHis' ) . '-' . bin2hex( random_bytes( 4 ) );
         $user = eZUser::currentUser();
         self::write( $id, array( 'id' => $id, 'command' => 'export', 'status' => 'starting', 'started' => time(),
-                                 'by' => $user->attribute( 'login' ), 'options' => $options, 'result' => null ) );
+                                 'by' => $user->attribute( 'login' ), 'user_id' => (int)$user->attribute( 'contentobject_id' ),
+                                 'options' => $options, 'result' => null ) );
         touch( $dir . '/' . $id . '.log' );
 
         $line = array( $setsid, '-f', $php, 'extension/bccie/bin/php/export.php', '--job=' . $id, '-q' );
@@ -179,6 +180,54 @@ class bccieJob
         $state = self::isID( $id ) && is_file( $file ) ? json_decode( (string)file_get_contents( $file ), true ) : false;
 
         return is_array( $state ) && isset( $state['options'] ) && is_array( $state['options'] ) ? $state['options'] : array();
+    }
+
+    /**
+     * Whether the current user may see the state, the log and the file of a job: only the user who started it, and
+     * only while that user can still read the object whose collected information it exports. An unknown job, a job
+     * without an owner or without an object is refused.
+     *
+     * @return bool
+     */
+    static function accessible( $id )
+    {
+        $file = static::directory() . '/' . $id . '.json';
+        $state = self::isID( $id ) && is_file( $file ) ? json_decode( (string)file_get_contents( $file ), true ) : false;
+        if ( !is_array( $state ) || !self::belongsTo( $state, static::currentUserID() ) )
+        {
+            return false;
+        }
+        $objectID = isset( $state['options']['object_id'] ) ? (int)$state['options']['object_id'] : 0;
+        $object = $objectID > 0 ? static::fetchObject( $objectID ) : null;
+
+        return is_object( $object ) && $object->canRead();
+    }
+
+    /**
+     * @return int the id of the current user (a seam: a test subclass answers it without a session)
+     */
+    protected static function currentUserID()
+    {
+        return (int)eZUser::currentUserID();
+    }
+
+    /**
+     * @return eZContentObject|null the object $objectID (a seam: a test subclass answers it without a database)
+     */
+    protected static function fetchObject( $objectID )
+    {
+        return eZContentObject::fetch( (int)$objectID );
+    }
+
+    /**
+     * Whether the job state $state was started by the user $userID (the user id start() stores). A state without
+     * one, written before it was stored, belongs to nobody.
+     *
+     * @return bool
+     */
+    static function belongsTo( array $state, $userID )
+    {
+        return $userID > 0 && isset( $state['user_id'] ) && (int)$state['user_id'] === (int)$userID;
     }
 
     /**

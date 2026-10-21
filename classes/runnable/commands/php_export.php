@@ -194,7 +194,10 @@ class Export extends \Exponential\Runnable\Command
         \bccieJob::write( $jobID, array( 'id' => $jobID, 'command' => 'export', 'status' => $status,
                                           'started' => $state && isset( $state['started'] ) ? $state['started'] : time(),
                                           'finished' => in_array( $status, array( 'done', 'failed' ), true ) ? time() : null,
-                                          'by' => $state && isset( $state['by'] ) ? $state['by'] : 'job', 'options' => $saved, 'result' => $result ) );
+                                          'by' => $state && isset( $state['by'] ) ? $state['by'] : 'job',
+                                          // the owner stays with the job: bccie/job and bccie/download answer only that user
+                                          'user_id' => $state && isset( $state['user_id'] ) ? (int)$state['user_id'] : 0,
+                                          'options' => $saved, 'result' => $result ) );
     }
 }
 
