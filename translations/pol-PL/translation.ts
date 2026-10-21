@@ -9,7 +9,7 @@
     </message>
     <message>
         <source>Invert selection.</source>
-        <translation>Odwróć zaznaczenie.</translation>
+        <translation>Odwrócić zaznaczenie.</translation>
     </message>
     <message>
         <source>Collection ID</source>
@@ -29,7 +29,7 @@
     </message>
     <message>
         <source>Select collected information for removal.</source>
-        <translation>Zaznacz zebrane informacje do usunięcia.</translation>
+        <translation>Zaznaczyć zebrane informacje do usunięcia.</translation>
     </message>
     <message>
         <source>Unknown user</source>
@@ -41,11 +41,11 @@
     </message>
     <message>
         <source>Remove selected</source>
-        <translation>Usuń zaznaczone</translation>
+        <translation>Usunąć zaznaczone</translation>
     </message>
     <message>
         <source>Remove selected collection.</source>
-        <translation>Usuń zaznaczony zbiór.</translation>
+        <translation>Usunąć zaznaczony zbiór.</translation>
     </message>
     <message>
         <source>Information collected by &lt;%object_name&gt; [%collection_count]</source>
@@ -56,11 +56,11 @@
     <name>design/bccie/collectionlist</name>
     <message>
         <source>Export Collection</source>
-        <translation>Eksportuj zbiór</translation>
+        <translation>Wyeksportować zbiór</translation>
     </message>
     <message>
         <source>Export selected collection.</source>
-        <translation>Eksportuj wybrany zbiór.</translation>
+        <translation>Wyeksportować zaznaczony zbiór.</translation>
     </message>
 </context>
 <context>
@@ -71,7 +71,7 @@
     </message>
     <message>
         <source>Invert selection.</source>
-        <translation>Odwróć zaznaczenie.</translation>
+        <translation>Odwrócić zaznaczenie.</translation>
     </message>
     <message>
         <source>Name</source>
@@ -95,7 +95,7 @@
     </message>
     <message>
         <source>Select collections for removal.</source>
-        <translation>Zaznacz zbiory do usunięcia.</translation>
+        <translation>Zaznaczyć zbiory do usunięcia.</translation>
     </message>
     <message>
         <source>section</source>
@@ -103,15 +103,15 @@
     </message>
     <message>
         <source>There are no objects that have collected any information.</source>
-        <translation>Nie ma żadnych obiektów, które posiadają jakiekolwiek zebrane informacje.</translation>
+        <translation>Brak obiektów, które zebrały jakiekolwiek informacje.</translation>
     </message>
     <message>
         <source>Remove selected</source>
-        <translation>Usuń zaznaczone</translation>
+        <translation>Usunąć zaznaczone</translation>
     </message>
     <message>
         <source>Remove all information that was collected by the selected objects.</source>
-        <translation>Usuń wszystkie informacje zebrane przez zaznaczone obiekty.</translation>
+        <translation>Usunąć wszystkie informacje zebrane przez zaznaczone obiekty.</translation>
     </message>
     <message>
         <source>Objects that have collected information [%object_count]</source>
@@ -163,7 +163,7 @@
     <name>extension/bccie</name>
     <message>
         <source>Collected information export</source>
-        <translation>Zebrane informacje export</translation>
+        <translation>Eksport zebranych informacji</translation>
     </message>
     <message>
         <source>Information collected by %object_name</source>
@@ -618,35 +618,35 @@
     </message>
     <message>
         <source>Content object id</source>
-        <translation>ID obiektu przechowującego</translation>
+        <translation>ID obiektu treści</translation>
     </message>
     <message>
         <source>Leave empty (note: field still gets created)</source>
-        <translation>Pozostaw pustą kolumną</translation>
+        <translation>Pozostawić puste (uwaga: pole i tak zostanie utworzone)</translation>
     </message>
     <message>
         <source>Ignore (note: field doesn't get created at all)</source>
-        <translation>Ignoruj kolumnę (uwaga: pole nie zostanie utworzone)</translation>
+        <translation>Ignorować (uwaga: pole w ogóle nie zostanie utworzone)</translation>
     </message>
     <message>
         <source>Export type</source>
-        <translation>Typ exportu</translation>
+        <translation>Typ eksportu</translation>
     </message>
     <message>
         <source>Separation char for CSV export</source>
-        <translation>Znak separacji dla exportu do CSV</translation>
+        <translation>Znak separatora dla eksportu CSV</translation>
     </message>
     <message>
         <source>Do export</source>
-        <translation>Wykonaj export</translation>
+        <translation>Wyeksportować</translation>
     </message>
     <message>
         <source>Start Date</source>
-        <translation>Początkowa data</translation>
+        <translation>Data początkowa</translation>
     </message>
     <message>
         <source>End Date</source>
-        <translation>Końcowa data</translation>
+        <translation>Data końcowa</translation>
     </message>
     <message>
         <source>Day</source>
@@ -662,7 +662,7 @@
     </message>
     <message>
         <source>Do export.</source>
-        <translation>Eksportuj.</translation>
+        <translation>Wyeksportować.</translation>
     </message>
     <message>
         <source>Semicolon</source>
@@ -678,11 +678,11 @@
     </message>
     <message>
         <source>Pipe</source>
-        <translation>Pionowa kreska</translation>
+        <translation>Kreska pionowa</translation>
     </message>
     <message>
         <source>Hash</source>
-        <translation>Krzyżyk</translation>
+        <translation>Hasz</translation>
     </message>
     <message>
         <source>Created</source>
@@ -694,15 +694,15 @@
     </message>
     <message>
         <source>Export creation and modification date</source>
-        <translation>Eksportuj datę utworzenia i modyfikacji</translation>
+        <translation>Eksportować datę utworzenia i modyfikacji</translation>
     </message>
     <message>
         <source>Export Creation Date</source>
-        <translation>Eksportuj datę utworzenia</translation>
+        <translation>Eksportować datę utworzenia</translation>
     </message>
     <message>
         <source>Export Modification Date</source>
-        <translation>Eksportuj datę modyfikacji</translation>
+        <translation>Eksportować datę modyfikacji</translation>
     </message>
     <message>
         <source>SYLK (Excel)</source>
