@@ -6,3 +6,6 @@
     'overview', 'Collected information export'|i18n( 'extension/bccie' ),
     'collected', 'Collected information'|i18n( 'extension/bccie' ),
     'project', 'Extension project'|i18n( 'extension/bccie' ) )}
+
+{* the "Import and export" list of the transfer registry (Exponential 6.0.15 and later; nothing on an older kernel) *}
+{if ezini_hasvariable( 'Service_transfer.registry', 'Class', 'kernelservices.ini' )}{include uri='design:transfer/left_menu.tpl' current='transfer.bccie'}{/if}

@@ -728,4 +728,15 @@
         <translation>Menü für den Export gesammelter Informationen</translation>
     </message>
 </context>
+<context>
+    <name>kernel/transfer</name>
+    <message>
+        <source>Collected information export (CIE)</source>
+        <translation>Export gesammelter Informationen (CIE)</translation>
+    </message>
+    <message>
+        <source>Download what the site&apos;s forms collected as spreadsheet files, in the character set your spreadsheet needs, now or by cronjob.</source>
+        <translation>Herunterladen, was die Formulare der Site gesammelt haben, als Tabellendateien im Zeichensatz, den Ihre Tabellenkalkulation braucht, sofort oder per Cronjob.</translation>
+    </message>
+</context>
 </TS>
