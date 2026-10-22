@@ -10,6 +10,9 @@ Tabs[]=bccie_overview
 NavigationPartIdentifier=ezbccienavigationpart
 Name=CIE
 Tooltip=Collected Information Export Menu
+# Icon - (optional) the name of an icon admin4 draws before the tab's name: a name of design.ini
+#        [AdminDesignSettings] IconList[] (Bootstrap Icons); a name it does not know draws no icon.
+Icon=arrow-down-up
 URL[]
 URL[default]=bccie/overview
 Enabled[]
