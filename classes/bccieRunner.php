@@ -474,12 +474,16 @@ class bccieRunner
                     continue;
                 }
 
+                $started = time();
+                $title = bccieTransfer::title( $object->attribute( 'name' ), $options );
                 $rows = self::exportToFile( $options, $file );
                 if ( $rows === false )
                 {
                     $totals['ok'] = false;
                     $totals['errors'][] = 'The file ' . $file . ' cannot be written.';
                     $out->error( end( $totals['errors'] ) );
+                    bccieTransfer::record( $options, array( 'state' => 'failed', 'started' => $started, 'title' => $title, 'rows_total' => $count,
+                                                            'error' => 'The file cannot be written.', 'detail' => array( 'source' => $source ) ) );
                     continue;
                 }
                 ++$totals['files'];
@@ -488,6 +492,7 @@ class bccieRunner
                 self::recordExport( array( 'object_id' => (int)$objectID, 'name' => $object->attribute( 'name' ), 'format' => $format,
                                            'rows' => $rows, 'source' => $source, 'by' => $source, 'file' => $file ) );
 
+                $removed = 0;
                 if ( $remove && $rows > 0 )
                 {
                     // only what the file holds goes: the collections that came in during the export stay
@@ -495,6 +500,10 @@ class bccieRunner
                     $totals['removed'] += $removed;
                     $out->output( 'Removed ' . $removed . ' exported collections.' );
                 }
+                // the run history names the file in [CieSettings] Directory, never its path
+                bccieTransfer::record( $options, array( 'state' => 'done', 'started' => $started, 'title' => $title, 'rows_done' => $rows,
+                                                        'rows_total' => $rows, 'bytes' => is_file( $file ) ? filesize( $file ) : 0,
+                                                        'file_ref' => basename( $file ), 'detail' => array( 'source' => $source, 'removed' => $removed ) ) );
             }
         }
         catch ( \Throwable $e )

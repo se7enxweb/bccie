@@ -79,7 +79,7 @@ class bccieExportPage
                 if ( $http->hasPostVariable( 'RunBackgroundButton' ) )
                 {
                     $error = '';
-                    $jobID = bccieJob::start( $options, $error );
+                    $jobID = bccieJob::start( $options, $error, $count );
                     if ( !$jobID )
                     {
                         bccieUI::notice( 'error', ezpI18n::tr( 'extension/bccie', 'The export could not be started: %reason', null, array( '%reason' => $error ) ) );
@@ -89,7 +89,13 @@ class bccieExportPage
                 }
                 // the download: the file is written while the page waits
                 @set_time_limit( (int)eZINI::instance( 'cie.ini' )->variable( 'CieSettings', 'ExportExecutionTimeLimit' ) );
+                $started = time();
                 $text = bccieRunner::exportToString( $options );
+                // the run history: a download in the request, no file kept
+                bccieTransfer::record( $options, array( 'state' => 'done', 'engine' => 'inline', 'started' => $started,
+                                                        'title' => bccieTransfer::title( $object->attribute( 'name' ), $options ),
+                                                        'rows_done' => $count, 'rows_total' => $count, 'bytes' => strlen( $text ),
+                                                        'detail' => array( 'source' => 'admin' ) ) );
                 $handler = bccieExportFormatOutputHandler::instance( $options['charset'] !== '' ? $options['charset'] : null );
                 $handler->setOutputFileName( bccieExportUtils::getFileName( $options['format'], $object ) );
                 $handler->setContentType( $options['format'] === 'sylk' ? 'application/x-sylk' : 'text/csv' );
@@ -215,7 +221,10 @@ class bccieExportPage
         $tpl->setVariable( 'errors', $errors );
         $tpl->setVariable( 'error_list', $errorList );
         $tpl->setVariable( 'notices', bccieUI::takeNotices() );
-        $tpl->setVariable( 'job_id', isset( $userParameters['job'] ) && bccieJob::isID( $userParameters['job'] ) ? $userParameters['job'] : '' );
+        $jobID = isset( $userParameters['job'] ) && bccieJob::isID( $userParameters['job'] ) ? $userParameters['job'] : '';
+        $tpl->setVariable( 'job_id', $jobID );
+        // the format of the user's own job (Imports takes the CSV files of CIE, not the SYLK files)
+        $tpl->setVariable( 'job_format', $jobID !== '' && bccieJob::accessible( $jobID ) ? bccieTransfer::format( bccieJob::options( $jobID ) ) : '' );
         $tpl->setVariable( 'history', $history );
         $tpl->setVariable( 'direct_limit', bccieRunner::directLimit() );
         $tpl->setVariable( 'confirm_remove', $confirmRemove );

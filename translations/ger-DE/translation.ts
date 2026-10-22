@@ -482,6 +482,22 @@
         <translation>startet</translation>
     </message>
     <message>
+        <source>queued</source>
+        <translation>wartet</translation>
+    </message>
+    <message>
+        <source>cancelled</source>
+        <translation>abgebrochen</translation>
+    </message>
+    <message>
+        <source>Open in Imports</source>
+        <translation>In Importen öffnen</translation>
+    </message>
+    <message>
+        <source>All import and export runs</source>
+        <translation>Alle Import- und Exportläufe</translation>
+    </message>
+    <message>
         <source>Download the file</source>
         <translation>Datei herunterladen</translation>
     </message>

@@ -31,5 +31,15 @@ Keywords[]=Formular
 Keywords[]=Einsendungen
 Keywords[]=Umfrage
 Weight=71
+# The background exports (Exponential 6.0.15 and later, the kernel's doc/eng-us/features/6.0/transfer-runs.md): the job
+# queue runs them as the job type bccie.export (settings/expqueue.ini.append.php) when expqueue is active and a worker
+# is alive, else the kernel's content jobs, else CIE's own background process. Without Engine= the choice is
+# transfer.ini's.
+QueueJobType=bccie.export
+# Who sees every user's CIE runs in the run history (everybody else sees their own): the users who may remove
+# collected information (bccie/remove) already decide over every form's submissions, which is more than seeing who
+# exported how many rows of which form. A row holds no submission data, and the job's file stays with the user who
+# started it (bccieJob::accessible()); the cronjob exports are recorded as the cron user of cie.ini.
+HistoryAllPermission=bccie/remove
 
 */ ?>

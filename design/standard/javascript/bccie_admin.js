@@ -23,7 +23,7 @@
         } catch (e) {
             labels = {};
         }
-        var classes = { starting: 'is-info', running: 'is-warn', done: 'is-ok', failed: 'is-bad', unknown: '' };
+        var classes = { queued: 'is-info', starting: 'is-info', running: 'is-warn', done: 'is-ok', failed: 'is-bad', cancelled: '', unknown: '' };
 
         function poll() {
             fetch(box.getAttribute('data-url'), { credentials: 'same-origin', headers: { 'Accept': 'application/json' } })
@@ -46,7 +46,7 @@
                         document.getElementById('cie-job-size').textContent = job.file.name + ' (' + Math.max(1, Math.round(job.file.size / 1024)) + ' KB)';
                         document.getElementById('cie-job-bar').style.width = '100%';
                     }
-                    if (job.status === 'starting' || job.status === 'running') { window.setTimeout(poll, 1500); }
+                    if (job.status === 'queued' || job.status === 'starting' || job.status === 'running') { window.setTimeout(poll, 1500); }
                 })
                 .catch(function () { window.setTimeout(poll, 5000); });
         }

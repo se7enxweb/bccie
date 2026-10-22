@@ -9,7 +9,7 @@
     <div class="box-content">
 
         {include uri='design:parts/bccie/notices.tpl' notices=$notices}
-        {include uri='design:parts/bccie/job.tpl' job_id=$job_id}
+        {include uri='design:parts/bccie/job.tpl' job_id=$job_id job_format=$job_format}
 
         {if $error_list|count}
         <div class="message-error" role="alert">
@@ -128,10 +128,11 @@
                     <td class="cie-num">{$entry.rows}</td>
                     <td>{$entry.by|wash}</td>
                     <td>{$entry.source|wash}</td>
-                    <td class="cie-actions">{if $entry.downloadable}<a class="button" href={concat( 'bccie/download/', $entry.job )|ezurl}>{'Download'|i18n( 'extension/bccie' )}</a>{/if}</td>
+                    <td class="cie-actions">{if $entry.downloadable}<a class="button" href={concat( 'bccie/download/', $entry.job )|ezurl}>{'Download'|i18n( 'extension/bccie' )}</a>{if ezini_hasvariable( 'Service_transfer.registry', 'Class', 'kernelservices.ini' )} {include uri='design:parts/bccie/transfer_links.tpl' show='import' job_id=$entry.job format=$entry.format}{/if}{/if}</td>
                 </tr>
                 {/foreach}
             </table>
+            {if ezini_hasvariable( 'Service_transfer.registry', 'Class', 'kernelservices.ini' )}{include uri='design:parts/bccie/transfer_links.tpl' show='runs'}{/if}
         </section>
         {/if}
     </div>

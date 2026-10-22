@@ -42,7 +42,8 @@ class Export extends \Exponential\Runnable\Command
 
         if ( $jobID )
         {
-            $state = \bccieJob::status( $jobID );
+            // the job file as it is stored: with the engine and the run of the kernel's transfer runner, if any
+            $state = \bccieJob::read( $jobID );
             $saved = \bccieJob::options( $jobID );
             if ( !$state || !$saved )
             {
@@ -131,21 +132,31 @@ class Export extends \Exponential\Runnable\Command
             return 1;
         }
         $path = $dir . '/' . \bccieExportUtils::getFileName( $normalized['format'], $object );
+        $started = time();
+        $title = \bccieTransfer::title( $object->attribute( 'name' ), $normalized );
         $rows = \bccieRunner::exportToFile( $normalized, $path );
         if ( $rows === false )
         {
             \bccieRunner::unlock( $lock );
             $out->error( 'The file ' . $path . ' cannot be written.' );
+            \bccieTransfer::record( $normalized, array( 'state' => 'failed', 'started' => $started, 'title' => $title, 'rows_total' => $count,
+                                                        'error' => 'The file cannot be written.', 'detail' => array( 'source' => 'console' ) ) );
             $this->shutdown( 1 );
             return 1;
         }
         $out->output( 'Wrote ' . $rows . ' collections to ' . $path );
         \bccieRunner::recordExport( array( 'object_id' => $normalized['object_id'], 'name' => $object->attribute( 'name' ), 'format' => $normalized['format'],
                                            'rows' => $rows, 'source' => 'console', 'by' => 'console', 'file' => $path ) );
+        $removed = 0;
         if ( $options['remove-exported'] && $rows > 0 )
         {
-            $out->output( 'Removed ' . \bccieRunner::removeCollections( $normalized, $rows ) . ' exported collections.' );
+            $removed = \bccieRunner::removeCollections( $normalized, $rows );
+            $out->output( 'Removed ' . $removed . ' exported collections.' );
         }
+        // the file lies in a folder of the console's choice: the history names the file, never its path
+        \bccieTransfer::record( $normalized, array( 'state' => 'done', 'started' => $started, 'title' => $title, 'rows_done' => $rows, 'rows_total' => $rows,
+                                                    'bytes' => is_file( $path ) ? filesize( $path ) : 0, 'file_ref' => basename( $path ),
+                                                    'detail' => array( 'source' => 'console', 'removed' => $removed ) ) );
         \bccieRunner::unlock( $lock );
         $this->shutdown( 0 );
         return 0;
@@ -154,11 +165,14 @@ class Export extends \Exponential\Runnable\Command
     protected function runJob( $jobID, $state, array $saved, $out )
     {
         $object = \eZContentObject::fetch( (int)$saved['object_id'] );
+        // the run history: kept here only when no engine of the kernel runs the job (bccieTransfer)
+        $runID = $this->startHistory( $jobID, $state, $saved, $object );
         $lock = \bccieRunner::lock( 'export' );
         if ( !$lock )
         {
             $out->error( 'Another export is running.' );
             $this->writeJob( $jobID, $state, 'failed', array( 'error' => 'Another export is running.' ), $saved );
+            $this->finishHistory( $runID, 'failed', array( 'error' => 'Another export is running.' ) );
             $this->shutdown( 1 );
             return 1;
         }
@@ -167,26 +181,69 @@ class Export extends \Exponential\Runnable\Command
         $path = \bccieJob::directory() . '/' . $fileName;
         $out->output( 'Exporting "' . ( $object ? $object->attribute( 'name' ) : $saved['object_id'] ) . '" as ' . strtoupper( $extension ) . '.' );
         $self = $this;
-        $rows = \bccieRunner::exportToFile( $saved, $path, function ( $done, $total ) use ( $out, $jobID, $state, $saved, $self )
+        $rows = \bccieRunner::exportToFile( $saved, $path, function ( $done, $total ) use ( $out, $jobID, $state, $saved, $self, $runID )
         {
             $out->output( 'Rows: ' . $done . ' of ' . $total );
             $self->writeJob( $jobID, $state, 'running', array( 'done' => $done, 'total' => $total ), $saved );
+            if ( $runID > 0 )
+            {
+                \bccieTransfer::history( 'progress', array( $runID, $done, $total ) );
+            }
         } );
         \bccieRunner::unlock( $lock );
         if ( $rows === false )
         {
             $out->error( 'The file cannot be written.' );
             $this->writeJob( $jobID, $state, 'failed', array( 'error' => 'The file cannot be written.' ), $saved );
+            $this->finishHistory( $runID, 'failed', array( 'error' => 'The file cannot be written.' ) );
             $this->shutdown( 1 );
             return 1;
         }
         $out->output( 'Done: ' . $rows . ' rows.' );
         \bccieRunner::recordExport( array( 'object_id' => (int)$saved['object_id'], 'name' => $object ? $object->attribute( 'name' ) : '', 'format' => $saved['format'],
                                            'rows' => $rows, 'source' => 'job', 'job' => $jobID, 'by' => isset( $state['by'] ) ? $state['by'] : 'job' ) );
-        $this->writeJob( $jobID, $state, 'done', array( 'rows' => $rows, 'done' => $rows, 'total' => $rows, 'file' => $fileName ), $saved );
+        $result = array( 'rows' => $rows, 'done' => $rows, 'total' => $rows, 'file' => $fileName );
+        $this->writeJob( $jobID, $state, 'done', $result, $saved );
+        $this->finishHistory( $runID, 'done', \bccieTransfer::resultOf( array( 'result' => $result, 'options' => $saved ), is_file( $path ) ? filesize( $path ) : null ) );
         \bccieJob::prune();
         $this->shutdown( 0 );
         return 0;
+    }
+
+    /**
+     * The run of a job in the run history, when this command keeps it (engine process, or a job of an older version):
+     * the row bccieJob::start() had the runner make, or a new one.
+     *
+     * @return int the row's id, 0 when this command keeps none
+     */
+    protected function startHistory( $jobID, $state, array $saved, $object )
+    {
+        if ( !\bccieTransfer::historyAvailable() || !\bccieTransfer::commandKeepsHistory( $state ) )
+        {
+            return 0;
+        }
+        $runID = is_array( $state ) && !empty( $state['run_id'] ) ? (int)$state['run_id'] : 0;
+        if ( $runID > 0 )
+        {
+            \bccieTransfer::history( 'update', array( $runID, array( 'state' => 'running', 'engine' => 'process' ) ) );
+            return $runID;
+        }
+        $title = \bccieTransfer::title( $object ? $object->attribute( 'name' ) : '', $saved );
+        $info = \bccieTransfer::historyInfo( $saved, $jobID, $title ) + array( 'engine' => 'process', 'state' => 'running' );
+        if ( is_array( $state ) && !empty( $state['user_id'] ) )
+        {
+            $info['user_id'] = (int)$state['user_id'];
+        }
+
+        return (int)\bccieTransfer::history( 'start', array( \bccieTransfer::TOOL, $info ) );
+    }
+
+    protected function finishHistory( $runID, $state, array $info )
+    {
+        if ( $runID > 0 )
+        {
+            \bccieTransfer::history( 'finish', array( $runID, $state, $info ) );
+        }
     }
 
     public function writeJob( $jobID, $state, $status, $result, array $saved )
@@ -197,7 +254,7 @@ class Export extends \Exponential\Runnable\Command
                                           'by' => $state && isset( $state['by'] ) ? $state['by'] : 'job',
                                           // the owner stays with the job: bccie/job and bccie/download answer only that user
                                           'user_id' => $state && isset( $state['user_id'] ) ? (int)$state['user_id'] : 0,
-                                          'options' => $saved, 'result' => $result ) );
+                                          'options' => $saved, 'result' => $result ) + \bccieTransfer::jobKeys( $state ) );
     }
 }
 

@@ -35,21 +35,27 @@ class bccieJob
     /**
      * Start an export in the background.
      *
+     * On Exponential 6.0.15 and later the job goes to the kernel's transfer runner (bccieTransfer): the job queue or
+     * the kernel's content jobs run it (bccieTransferTask) when the installation has them, and the job file says
+     * which (engine, job_ref, run_id; status "queued" until the export command starts). Otherwise, and on older
+     * kernels, the export command is started in the background here, as before.
+     *
      * @param array $options the validated options of bccieRunner::normalizeOptions()
      * @param string $error receives the reason when it could not start
+     * @param int|null $total the number of collections the export holds (for the run history)
      * @return string|false the job id
      */
-    static function start( array $options, &$error )
+    static function start( array $options, &$error, $total = null )
     {
+        // every engine runs the export command: it needs the PHP command line and proc_open
         $php = class_exists( 'expProcessTools' ) ? expProcessTools::phpCli() : false;
-        $setsid = class_exists( 'expProcessTools' ) ? expProcessTools::setsid() : false;
-        if ( !$php || !$setsid || !function_exists( 'proc_open' ) )
+        if ( !$php || !function_exists( 'proc_open' ) )
         {
             $error = class_exists( 'expProcessTools' ) && expProcessTools::error() !== ''
                 ? expProcessTools::error() : 'A background run needs proc_open, setsid and the PHP command line.';
             return false;
         }
-        $dir = self::directory();
+        $dir = static::directory();
         if ( !is_dir( $dir ) && !eZDir::mkdir( $dir, false, true ) )
         {
             $error = 'The folder ' . $dir . ' cannot be created.';
@@ -57,21 +63,43 @@ class bccieJob
         }
         $id = date( 'YmdHis' ) . '-' . bin2hex( random_bytes( 4 ) );
         $user = eZUser::currentUser();
-        self::write( $id, array( 'id' => $id, 'command' => 'export', 'status' => 'starting', 'started' => time(),
-                                 'by' => $user->attribute( 'login' ), 'user_id' => (int)$user->attribute( 'contentobject_id' ),
-                                 'options' => $options, 'result' => null ) );
+        $siteaccess = eZSiteAccess::current();
+        $siteaccessName = isset( $siteaccess['name'] ) && preg_match( '/^[A-Za-z0-9_.\-]+$/D', $siteaccess['name'] ) ? $siteaccess['name'] : '';
+        $state = array( 'id' => $id, 'command' => 'export', 'status' => 'starting', 'started' => time(),
+                        'by' => $user->attribute( 'login' ), 'user_id' => (int)$user->attribute( 'contentobject_id' ),
+                        'siteaccess' => $siteaccessName, 'options' => $options, 'result' => null );
+        self::write( $id, $state );
         touch( $dir . '/' . $id . '.log' );
 
-        $line = array( $setsid, '-f', $php, 'extension/bccie/bin/php/export.php', '--job=' . $id, '-q' );
-        $siteaccess = eZSiteAccess::current();
-        if ( isset( $siteaccess['name'] ) && preg_match( '/^[A-Za-z0-9_.\-]+$/', $siteaccess['name'] ) )
+        $run = bccieTransfer::submit( $id, $options, $total );
+        if ( $run )
         {
-            $line[] = '--siteaccess=' . $siteaccess['name'];
+            $state['engine'] = $run['engine'];
+            $state['job_ref'] = $run['job_ref'];
+            $state['run_id'] = (int)$run['run_id'];
+            if ( $run['engine'] !== 'process' )
+            {
+                // the queue or a content job runs it; its task may have taken the job file already
+                $now = self::read( $id );
+                if ( !is_array( $now ) || empty( $now['engine'] ) )
+                {
+                    $state['status'] = 'queued';
+                    self::write( $id, $state );
+                }
+                return $id;
+            }
+            self::write( $id, $state );
         }
-        if ( function_exists( 'posix_geteuid' ) && posix_geteuid() === 0 )
+
+        $setsid = class_exists( 'expProcessTools' ) ? expProcessTools::setsid() : false;
+        if ( !$setsid )
         {
-            $line[] = '--allow-root-user';
+            $error = class_exists( 'expProcessTools' ) && expProcessTools::error() !== ''
+                ? expProcessTools::error() : 'A background run needs proc_open, setsid and the PHP command line.';
+            self::fail( $id, $state, $error );
+            return false;
         }
+        $line = array_merge( array( $setsid, '-f' ), bccieTransfer::commandLine( $php, $id, $siteaccessName, function_exists( 'posix_geteuid' ) && posix_geteuid() === 0 ) );
         $pipes = array();
         $env = getenv();
         $env = is_array( $env ) ? $env : array();
@@ -83,7 +111,7 @@ class bccieJob
         if ( !is_resource( $process ) )
         {
             $error = 'The command could not be started.';
-            self::write( $id, array( 'id' => $id, 'command' => 'export', 'status' => 'failed', 'started' => time(), 'options' => $options, 'result' => array( 'error' => $error ) ) );
+            self::fail( $id, $state, $error );
             return false;
         }
         foreach ( $pipes as $pipe )
@@ -96,6 +124,32 @@ class bccieJob
     }
 
     /**
+     * Ends a job that could not be started: its file says failed, and so does its run in the run history.
+     */
+    protected static function fail( $id, array $state, $error )
+    {
+        $state['status'] = 'failed';
+        $state['finished'] = time();
+        $state['result'] = array( 'error' => $error );
+        self::write( $id, $state );
+        if ( !empty( $state['run_id'] ) && class_exists( 'expKernelTransferRun' ) )
+        {
+            bccieTransfer::history( 'finish', array( (int)$state['run_id'], expKernelTransferRun::STATE_FAILED, array( 'error' => $error ) ) );
+        }
+    }
+
+    /**
+     * @return array|false the job file of a job as it is stored (with its options), false for an unknown job
+     */
+    static function read( $id )
+    {
+        $file = static::directory() . '/' . $id . '.json';
+        $state = self::isID( $id ) && is_file( $file ) ? json_decode( (string)file_get_contents( $file ), true ) : false;
+
+        return is_array( $state ) && isset( $state['status'] ) ? $state : false;
+    }
+
+    /**
      * Store the state of a job.
      */
     static function write( $id, $state )
@@ -104,7 +158,7 @@ class bccieJob
         {
             return false;
         }
-        $file = self::directory() . '/' . $id . '.json';
+        $file = static::directory() . '/' . $id . '.json';
         return file_put_contents( $file . '.tmp', json_encode( $state ) ) !== false && rename( $file . '.tmp', $file );
     }
 
@@ -118,7 +172,7 @@ class bccieJob
         {
             return false;
         }
-        $file = self::directory() . '/' . $id . '.json';
+        $file = static::directory() . '/' . $id . '.json';
         if ( !is_file( $file ) )
         {
             return false;
@@ -128,7 +182,7 @@ class bccieJob
         {
             return false;
         }
-        $log = self::directory() . '/' . $id . '.log';
+        $log = static::directory() . '/' . $id . '.log';
         $lines = is_file( $log ) ? array_slice( file( $log, FILE_IGNORE_NEW_LINES ), -40 ) : array();
         $state['log'] = $lines;
         // a job that says "starting" or "running" for ten minutes without a sign of life is dead
@@ -137,12 +191,18 @@ class bccieJob
             $state['status'] = 'failed';
             $state['result'] = array( 'error' => 'The job stopped without a result.' );
         }
+        // a job waiting in the job queue or the content jobs: ended there before the export command ran?
+        if ( $state['status'] === 'queued' && !empty( $state['engine'] ) && !empty( $state['job_ref'] ) && class_exists( 'expKernelTransferRunner' ) )
+        {
+            $state = bccieTransfer::queuedState( $state, expKernelTransferRunner::jobState( (string)$state['engine'], (string)$state['job_ref'] ) );
+        }
         $export = self::exportFile( $id, $state );
         if ( $state['status'] === 'done' && $export )
         {
             $state['file'] = array( 'name' => basename( $export ), 'size' => filesize( $export ) );
         }
-        // the options are the job's own business, the page needs no copy of them
+        // the options are the job's own business, the page needs no copy of them (only the format)
+        $state['format'] = isset( $state['options'] ) && is_array( $state['options'] ) ? bccieTransfer::format( $state['options'] ) : '';
         unset( $state['options'] );
 
         return $state;
@@ -159,14 +219,14 @@ class bccieJob
         }
         if ( $state === null )
         {
-            $file = self::directory() . '/' . $id . '.json';
+            $file = static::directory() . '/' . $id . '.json';
             $state = is_file( $file ) ? json_decode( (string)file_get_contents( $file ), true ) : false;
         }
         if ( !is_array( $state ) || empty( $state['result']['file'] ) || !preg_match( '/^[0-9]{14}-[a-f0-9]{8}\.(csv|slk)$/D', $state['result']['file'] ) )
         {
             return false;
         }
-        $path = self::directory() . '/' . $state['result']['file'];
+        $path = static::directory() . '/' . $state['result']['file'];
 
         return is_file( $path ) ? $path : false;
     }
@@ -176,7 +236,7 @@ class bccieJob
      */
     static function options( $id )
     {
-        $file = self::directory() . '/' . $id . '.json';
+        $file = static::directory() . '/' . $id . '.json';
         $state = self::isID( $id ) && is_file( $file ) ? json_decode( (string)file_get_contents( $file ), true ) : false;
 
         return is_array( $state ) && isset( $state['options'] ) && is_array( $state['options'] ) ? $state['options'] : array();
@@ -237,7 +297,7 @@ class bccieJob
     {
         if ( self::isID( $id ) )
         {
-            file_put_contents( self::directory() . '/' . $id . '.log', $text . "\n", FILE_APPEND );
+            file_put_contents( static::directory() . '/' . $id . '.log', $text . "\n", FILE_APPEND );
         }
     }
 
@@ -246,7 +306,7 @@ class bccieJob
      */
     static function prune()
     {
-        $files = glob( self::directory() . '/*.json' );
+        $files = glob( static::directory() . '/*.json' );
         if ( !$files || count( $files ) <= self::KEEP )
         {
             return;
