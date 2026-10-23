@@ -187,7 +187,7 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Anuluj</translation>
+        <translation>Anulować</translation>
     </message>
     <message>
         <source>%count collections between %first and %last.</source>
@@ -195,7 +195,7 @@
     </message>
     <message>
         <source>Show the collections</source>
-        <translation>Pokaż zbiory</translation>
+        <translation>Pokazać zbiory</translation>
     </message>
     <message>
         <source>Fields</source>
@@ -231,7 +231,7 @@
     </message>
     <message>
         <source>Run in the background</source>
-        <translation>Uruchom w tle</translation>
+        <translation>Uruchomić w tle</translation>
     </message>
     <message>
         <source>More than %limit collections must run in the background; the file is offered for download when it is done.</source>
@@ -239,7 +239,7 @@
     </message>
     <message>
         <source>Remove collected information</source>
-        <translation>Usuń zebrane informacje</translation>
+        <translation>Usunąć zebrane informacje</translation>
     </message>
     <message>
         <source>Removes every collection of this form. Export the data first.</source>
@@ -247,7 +247,7 @@
     </message>
     <message>
         <source>Remove all collected information</source>
-        <translation>Usuń wszystkie zebrane informacje</translation>
+        <translation>Usunąć wszystkie zebrane informacje</translation>
     </message>
     <message>
         <source>Back to the overview</source>
@@ -279,7 +279,7 @@
     </message>
     <message>
         <source>Download</source>
-        <translation>Pobierz</translation>
+        <translation>Pobrać</translation>
     </message>
     <message>
         <source>Remove the collected information of these forms?</source>
@@ -383,7 +383,7 @@
     </message>
     <message>
         <source>Open</source>
-        <translation>Otwórz</translation>
+        <translation>Otworzyć</translation>
     </message>
     <message>
         <source>Nothing to report.</source>
@@ -395,7 +395,7 @@
     </message>
     <message>
         <source>Find a form</source>
-        <translation>Znajdź formularz</translation>
+        <translation>Znaleźć formularz</translation>
     </message>
     <message>
         <source>Name of the form</source>
@@ -407,11 +407,11 @@
     </message>
     <message>
         <source>Clear</source>
-        <translation>Wyczyść</translation>
+        <translation>Wyczyścić</translation>
     </message>
     <message>
         <source>Select all</source>
-        <translation>Zaznacz wszystko</translation>
+        <translation>Zaznaczyć wszystko</translation>
     </message>
     <message>
         <source>Name</source>
@@ -435,7 +435,7 @@
     </message>
     <message>
         <source>Select</source>
-        <translation>Wybierz</translation>
+        <translation>Wybrać</translation>
     </message>
     <message>
         <source>Export</source>
@@ -447,11 +447,11 @@
     </message>
     <message>
         <source>Remove selected</source>
-        <translation>Usuń zaznaczone</translation>
+        <translation>Usunąć zaznaczone</translation>
     </message>
     <message>
         <source>Remove all information that was collected by the selected objects.</source>
-        <translation>Usuń wszystkie informacje zebrane przez zaznaczone obiekty.</translation>
+        <translation>Usunąć wszystkie informacje zebrane przez zaznaczone obiekty.</translation>
     </message>
     <message>
         <source>%count of %all forms</source>
@@ -463,7 +463,7 @@
     </message>
     <message>
         <source>Show all forms</source>
-        <translation>Pokaż wszystkie formularze</translation>
+        <translation>Pokazać wszystkie formularze</translation>
     </message>
     <message>
         <source>There are no objects that have collected any information.</source>
@@ -483,7 +483,7 @@
     </message>
     <message>
         <source>Download the file</source>
-        <translation>Pobierz plik</translation>
+        <translation>Pobrać plik</translation>
     </message>
     <message>
         <source>running</source>
