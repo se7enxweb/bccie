@@ -4,7 +4,7 @@
   <summary>Collected information export: a dashboard of the forms that collected information, exports to CSV and SYLK (Excel) from the admin, in the background, from the console and from cron.</summary>
   <metadata>
     <name>BC CIE - Collected Information Export</name>
-    <version>1.1.20</version>
+    <version>1.1.21</version>
     <copyright>Copyright (C) 1998 - 2026 7x and the Exponential Foundation. Copyright (C) 1999 - 2017 Brookins Consulting. Copyright (C) 2006 - 2007 Vitalis Mathias.</copyright>
     <license>GNU General Public License v2.0 (or any later version)</license>
     <info_url>https://github.com/se7enxweb/bccie</info_url>
