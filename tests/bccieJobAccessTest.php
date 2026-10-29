@@ -11,7 +11,7 @@
  *  JA-04 - start() stores the user id, and the export command keeps it when it writes the state again
  *  JA-05 - the export page offers a download only for a job the user may have
  *
- * @copyright Copyright (C) 1998 - 2026 7x & Exponential Foundation. All rights reserved.
+ * @copyright Copyright (C) 1998 - 2026 Exponential Foundation and 7x. All rights reserved.
  * @license GNU General Public License v2.0 (or any later version)
  * @package tests
  */

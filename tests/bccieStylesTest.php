@@ -9,7 +9,7 @@
  *  ST-01 - the templates and the job script use .a4-badge, no pill of their own, and no is-muted
  *  ST-02 - bccie.css draws no pill or badge of its own
  *
- * @copyright Copyright (C) 1998 - 2026 7x & Exponential Foundation. All rights reserved.
+ * @copyright Copyright (C) 1998 - 2026 Exponential Foundation and 7x. All rights reserved.
  * @license GNU General Public License v2.0 (or any later version)
  * @package tests
  */

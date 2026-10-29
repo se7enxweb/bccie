@@ -12,7 +12,7 @@
  *  JB-04 - the user's own job is refused when the object cannot be read or does not exist (any more)
  *  JB-05 - a job written before the owner was stored (no user_id) is refused
  *
- * @copyright Copyright (C) 1998 - 2026 7x & Exponential Foundation. All rights reserved.
+ * @copyright Copyright (C) 1998 - 2026 Exponential Foundation and 7x. All rights reserved.
  * @license GNU General Public License v2.0 (or any later version)
  * @package tests
  */
